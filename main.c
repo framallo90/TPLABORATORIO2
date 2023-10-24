@@ -5,7 +5,7 @@
 
 #define clear system("cls")
 #define pausa system("pause")
-
+///HOLAa
 typedef struct empleados_laboratorio {
     int DNI;
     char NyA[40];
