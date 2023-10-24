@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1698169870 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\trabajo practico laboratorio 2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+
