@@ -5,7 +5,7 @@
 
 #define clear system("cls")
 #define pausa system("pause")
-///HOLAa
+
 typedef struct empleados_laboratorio {
     int DNI;
     char NyA[40];
@@ -54,36 +54,41 @@ int main() {
 
     altaEmpleado();
     mostrarEmpleados();
-
+    int dni = 36053984;
+    borrarEmpleadoPorDNI(dni);
+    mostrarEmpleados();
     return 0;
 }
 
-empleados_laboratorio ingresoEmpleado(){
-
+empleados_laboratorio ingresoEmpleado() {
     empleados_laboratorio nuevo;
     char comprobacion[20];
     int contra = 1;
 
     printf("\nAPELLIDO Y NOMBRE: ");
     fflush(stdin);
-    scanf(" %s",&nuevo.NyA);
+    gets(&nuevo.NyA);
     printf("\nDNI: ");
-    scanf(" %d",&nuevo.DNI);
+    scanf(" %d", &nuevo.DNI);
     printf("\nPERFIL: ");
-    scanf(" %s",&nuevo.perfil);
+    fflush(stdin);
+    gets(&nuevo.perfil);
     printf("\nNOMBRE DE USUARIO: ");
-    scanf(" %s",&nuevo.Usuario);
+    fflush(stdin);
+    gets(&nuevo.Usuario);
 
-    while(contra == 1){
-        printf("\nINGRESE LA CONSTRASENA: ");
-    scanf(" %s",&nuevo.constrasena);
-    printf("\nVUELVA A INGRESAR LA CONTRASENA: ");
-    scanf(" %s",&comprobacion);
-        if(strcmp(comprobacion,nuevo.constrasena)==0){
+    while (contra == 1) {
+        printf("\nINGRESE LA CONTRASEÑA: ");
+        fflush(stdin);
+        scanf(" %s", nuevo.constrasena);
+        printf("\nVUELVA A INGRESAR LA CONTRASEÑA: ");
+        fflush(stdin);
+        scanf(" %s", comprobacion);
+        if (strcmp(comprobacion, nuevo.constrasena) == 0) {
             contra = 0;
-            printf("\nCONTRASENA ESTABLECIDA.");
-        }else{
-            printf("\nLAS CONTRASENAS NO COINCIDEN, VUELVA A INTENTARLO.");
+            printf("\nCONTRASEÑA ESTABLECIDA.");
+        } else {
+            printf("\nLAS CONTRASEÑAS NO COINCIDEN, VUELVA A INTENTARLO.");
         }
     }
 
@@ -158,4 +163,45 @@ void mostrarEmpleados() {
         printf("NO HAY EMPLEADOS REGISTRADOS EN EL ARCHIVO.\n");
     }
     fclose(archi);
+}
+
+void borrarEmpleadoPorDNI(int dni) {
+    FILE *archi = fopen("empleados.bin", "rb");
+    if (archi == NULL) {
+        printf("Error al abrir el archivo de empleados.\n");
+        return;
+    }
+
+    FILE *temp = fopen("temp.bin", "wb"); // Archivo temporal para escribir empleados válidos
+    if (temp == NULL) {
+        fclose(archi);
+        printf("Error al abrir el archivo temporal.\n");
+        return;
+    }
+
+    empleados_laboratorio empleado;
+    int encontrado = 0;
+
+    while (fread(&empleado, sizeof(empleados_laboratorio), 1, archi) == 1) {
+        if (empleado.DNI == dni) {
+            encontrado = 1;
+            // No copiamos este empleado al archivo temporal (lo estamos eliminando)
+        } else {
+            // Copiamos los otros empleados al archivo temporal
+            fwrite(&empleado, sizeof(empleados_laboratorio), 1, temp);
+        }
+    }
+
+    fclose(archi);
+    fclose(temp);
+
+    if (encontrado) {
+        // Reemplazamos el archivo original con el archivo temporal
+        remove("empleados.bin");
+        rename("temp.bin", "empleados.bin");
+        printf("Empleado con DNI %d eliminado con éxito.\n", dni);
+    } else {
+        remove("temp.bin"); // Si no se encontró al empleado, eliminamos el archivo temporal
+        printf("Empleado con DNI %d no encontrado.\n", dni);
+    }
 }
