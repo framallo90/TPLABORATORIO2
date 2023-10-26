@@ -14,17 +14,21 @@ typedef struct empleados_laboratorio {///USUARIOS QUE VAN A LOGUEAR
     char perfil[20];
 } empleados_laboratorio;
 
-typedef struct paciente {/// ARBOL
+typedef struct paciente{
     char NyA[40];
     int Edad;
     int DNI;
     char Direccion[30];
     char telefono[15];
     int Eliminado;
+}paciente;
+
+typedef struct nodoPaciente {/// ARBOL
+    paciente dato;
     struct ingresos *listaIngresos; // Puntero a la lista de ingresos asociados a este paciente
     struct paciente *izq; // Puntero al hijo izquierdo en el árbol (menor DNI)
     struct paciente *der; // Puntero al hijo derecho en el árbol (mayor DNI)
-} paciente;
+} nodoPaciente;
 
 typedef struct ingresos {///PRIMERA LISTA QUE SE DESPRENDE DEL ARBOL DE PACIENTES
     int NroDeIngreso;
@@ -52,19 +56,19 @@ typedef struct pracXingreso {///SEGUNDA LISTA QUE SE DESPRENDE DE LA LISTA DE IN
 
 int main() {
 
-    /**
+
     altaEmpleado();
     mostrarEmpleadosEnArchivo();
     borrarEmpleadoPorDNI();
     modificarEmpleadoPorDNI();
-    mostrarEmpleadosEnArchivo(); **/
+    mostrarEmpleadosEnArchivo();
 
-    /**altaPaciente();
+    altaPaciente();
     mostrarPacientes();
-    modificarPacientePorDNI();**/
+    modificarPacientePorDNI();
 
-    /**guardarPracticasEnArchivo();
-    mostrarPracticas**/
+    altaDePracticas();
+    mostrarPracticas();
 
 
     return 0;
@@ -257,8 +261,12 @@ void borrarEmpleadoPorDNI() {///BORRA EMPLEADOS POR DNI EN EL ARCHIVOS EMPLEADOS
     }
 }
 
-void modificarEmpleadoPorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO EMPLEADOS.BIN Y MODIFICA LOS DATOS DEL EMPLEADO ENCONTRADO
+void modificarEmpleadoPorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO EMPLEADOS.BIN Y MODIFICA LOS DATOS DEL EMPLEADO ENCONTRADO //REVISAR WHILE
     int dni;
+    char comprobacion[20]; // Comprobación para la contraseña
+    int contra = 1; // Contraseña
+    int perf = 1; // Perfil
+    int rta = 0; // Respuesta, perfil
     printf("\nINGRESE EL DNI DEL EMPLEADO: ");
     scanf("%d", &dni);
 
@@ -282,19 +290,65 @@ void modificarEmpleadoPorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO EMPLEADOS.BIN Y
             printf("Contraseña: %s\n", empleado.constrasena);
 
             // Realizar modificaciones
-            printf("Ingrese las nuevas informaciones:\n");
-            printf("Nombre y Apellido: ");
+            printf("\nINGRESE LA NUEVA INFORMACION");
+            printf("\nNOMBRE Y APELLIDO: ");
             fflush(stdin);
             gets(empleado.NyA);
-            printf("Perfil: ");
-            fflush(stdin);
+
+            while (perf == 1) {
+                    printf("\nPERFIL: \n1) ADMIN \n2) ADMINISTRATIVO \n3) PROFESIONAL DE LABORATORIO \n INGRESE NRO DE PERFIL: ");
+                    scanf(" %d", &rta);
+                    switch (rta) {
+                        case 1:
+                            strcpy(empleado.perfil, "ADMIN");
+                            perf = 0;
+                            break;
+                        case 2:
+                            strcpy(empleado.perfil, "ADMINISTRATIVO");
+                            perf = 0;
+                            break;
+                        case 3:
+                            while (perf == 1) {
+                                printf("\n1) BIOQUIMICO \n2) TECNICO \n INGRESE NRO DE PERFIL: ");
+                                scanf(" %d", &rta);
+                                switch (rta) {
+                                    case 1:
+                                        strcpy(empleado.perfil, "BIOQUIMICO");
+                                        perf = 0;
+                                        break;
+                                    case 2:
+                                        strcpy(empleado.perfil, "TECNICO");
+                                        perf = 0;
+                                        break;
+                                    default:
+                                        printf("\nOPCIÓN DE PERFIL NO VÁLIDA, INTENTE DE NUEVO");
+                                }
+                            }
+                            break;
+                        default:
+                            printf("\nEL PERFIL SELECCIONADO NO EXISTE, INTENTELO DE NUEVO;");
+                    }
+                }
+
             gets(empleado.perfil);
-            printf("Nombre de usuario: ");
+            printf("\nNOMBRE DE USUARIO: ");
             fflush(stdin);
             gets(empleado.Usuario);
-            printf("Contraseña: ");
-            fflush(stdin);
-            scanf("%s", empleado.constrasena);
+
+            while (contra == 1) {
+                    printf("\nINGRESE LA CONTRASEÑA: ");
+                    fflush(stdin);
+                    scanf(" %s", empleado.constrasena);
+                    printf("\nVUELVA A INGRESAR LA CONTRASEÑA: ");
+                    fflush(stdin);
+                    scanf(" %s", comprobacion);
+                    if (strcmp(comprobacion, empleado.constrasena) == 0) {
+                        contra = 0;
+                        printf("\nCONTRASEÑA ESTABLECIDA.");
+                    } else {
+                        printf("\nLAS CONTRASEÑAS NO COINCIDEN, VUELVA A INTENTARLO.");
+                    }
+                }
 
             rewind(archi);
 
@@ -315,6 +369,7 @@ void modificarEmpleadoPorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO EMPLEADOS.BIN Y
 
 
 /// FUNCIONES PARA ARCHIVO PACIENTES
+
 paciente IngresoPaciente() {///INGRESA DATOS DE PACIENTES E INICIALIZA LOS PUNTEROS EN NULL.
     paciente nuevo;
     printf("\nAPELLIDO Y NOMBRE DEL PACIENTE: ");
@@ -332,11 +387,15 @@ paciente IngresoPaciente() {///INGRESA DATOS DE PACIENTES E INICIALIZA LOS PUNTE
     gets(&nuevo.telefono);
     nuevo.Eliminado = 0; // Por defecto, el paciente no esta dado de baja
 
-    nuevo.listaIngresos = NULL;
-    nuevo.izq = NULL;
-    nuevo.der = NULL;
-
     return nuevo;
+}
+
+nodoPaciente* crearNodo(paciente dato){
+    nodoPaciente* nuevo = (nodoPaciente*)malloc(sizeof(nodoPaciente));
+    nuevo->dato = dato;
+    nuevo->listaIngresos = NULL;
+    nuevo->izq = NULL;
+    nuevo->der = NULL;
 }
 
 bool pacienteExiste(int dni) {/// TRUE OR FALSE, SI EL PACIENTE EXISTE O NO EN EL ARCHIVO PACIENTES.BIN, SE USA EN ALTA PACIENTE.
@@ -473,10 +532,10 @@ void modificarPacientePorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BI
 
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS
-practicas ingresoPracticas() {
+practicas ingresoPracticas() {///INGRESA LAS PRACTICAS, ELIMINADO (PARA DAR DE BAJA) ES 0 POR DEFECTO
     practicas practica;
 
-    printf("\nNOMBRE DE PRACTICA: ");
+    printf("\nNOMBRE D.E PRACTICA: ");
     fflush(stdin);
     gets(practica.NombreDePractica);
     printf("\nNro DE PRACTICA: ");
@@ -486,7 +545,7 @@ practicas ingresoPracticas() {
     return practica;
 }
 
-void guardarPracticasEnArchivo() {
+void altaDePracticas() {///ALTA DE PRACTICAS, USA INGRESO PRACTICAS, ********FALTA COMPROBACION POR NUMERO********
     FILE *archi = fopen("practicas.bin", "ab");
     if (archi == NULL) {
         printf("\nERROR AL ABRIR EL ARCHIVO DE PRACTICAS.");
@@ -536,7 +595,7 @@ void mostrarPracticas() {
     fclose(archi);
 }
 
-void modificarPracticaPorNumero() {
+void modificarPracticaPorNumero() {///PIDE NUMERO DE PRACT. SI LO ENCUENTRA DEJA MODIFICAR EL NOMBRE.
     int numero;
     printf("\nINGRESE EL NUMERO DE LA PRACTICA QUE DESEA ELIMINAR: ");
     scanf(" %d", &numero);
@@ -575,3 +634,5 @@ void modificarPracticaPorNumero() {
         printf("\n PRACTICA CON Nro %d, NO ENCONTRADA.", numero);
     }
 }
+//FALTA DAR DE BAJA
+
