@@ -54,28 +54,64 @@ int main() {
 
     altaEmpleado();
     mostrarEmpleados();
-    int dni = 36053984;
-    borrarEmpleadoPorDNI(dni);
+    borrarEmpleadoPorDNI();
     mostrarEmpleados();
     return 0;
 }
 
-empleados_laboratorio ingresoEmpleado() {
+
+/// ARCHIVO EMPLEADOS
+empleados_laboratorio ingresoEmpleado() { /// INGRESO EMPLEADO POR CONSOLA
     empleados_laboratorio nuevo;
-    char comprobacion[20];
-    int contra = 1;
+    char comprobacion[20]; // Comprobación para la contraseña
+    int contra = 1; // Contraseña
+    int perf = 1; // Perfil
+    int rta = 0; // Respuesta, perfil
 
     printf("\nAPELLIDO Y NOMBRE: ");
     fflush(stdin);
-    gets(&nuevo.NyA);
+    gets(nuevo.NyA);
     printf("\nDNI: ");
     scanf(" %d", &nuevo.DNI);
-    printf("\nPERFIL: ");
-    fflush(stdin);
-    gets(&nuevo.perfil);
+
+    while (perf == 1) {
+        printf("\nPERFIL: \n1) ADMIN \n2) ADMINISTRATIVO \n3) PROFESIONAL DE LABORATORIO \n INGRESE NRO DE PERFIL: ");
+        scanf(" %d", &rta);
+        switch (rta) {
+            case 1:
+                strcpy(nuevo.perfil, "ADMIN");
+                perf = 0;
+                break;
+            case 2:
+                strcpy(nuevo.perfil, "ADMINISTRATIVO");
+                perf = 0;
+                break;
+            case 3:
+                while (perf == 1) {
+                    printf("\n1) BIOQUIMICO \n2) TECNICO \n INGRESE NRO DE PERFIL: ");
+                    scanf(" %d", &rta);
+                    switch (rta) {
+                        case 1:
+                            strcpy(nuevo.perfil, "BIOQUIMICO");
+                            perf = 0;
+                            break;
+                        case 2:
+                            strcpy(nuevo.perfil, "TECNICO");
+                            perf = 0;
+                            break;
+                        default:
+                            printf("\nOPCIÓN DE PERFIL NO VÁLIDA, INTENTE DE NUEVO");
+                    }
+                }
+                break;
+            default:
+                printf("\nEL PERFIL SELECCIONADO NO EXISTE, INTENTELO DE NUEVO;");
+        }
+    }
+
     printf("\nNOMBRE DE USUARIO: ");
     fflush(stdin);
-    gets(&nuevo.Usuario);
+    gets(nuevo.Usuario);
 
     while (contra == 1) {
         printf("\nINGRESE LA CONTRASEÑA: ");
@@ -95,7 +131,7 @@ empleados_laboratorio ingresoEmpleado() {
     return nuevo;
 }
 
-bool empleadoExiste(int dni) {
+bool empleadoExiste(int dni) {/// TRUE OR FALSE, SI EL EMPLEADO EXISTE O NO EN EL ARCHIVO EMPLEADOS.BIN, SE USA EN ALTA EMPLEADO
     FILE *archi = fopen("empleados.bin", "rb");
     if (archi == NULL) {
         return false; // Si no se puede abrir el archivo, asumimos que el empleado no existe
@@ -113,7 +149,7 @@ bool empleadoExiste(int dni) {
     return false; // El empleado no existe en el archivo
 }
 
-void altaEmpleado() {
+void altaEmpleado() {/// PIDE DNI, COMPRUEBA QUE NO EXISTA Y COMIENZA EL ALTA. UTILIZA INGRESO EMPLEADO Y EMPLEADO EXISTE
     int dni;
     printf("\nINGRESE EL DNI DEL EMPLEADO: ");
     scanf("%d", &dni);
@@ -141,7 +177,7 @@ void altaEmpleado() {
     fclose(archi);
 }
 
-void mostrarEmpleados() {
+void mostrarEmpleados() {/// MUESTRA EMPLEADOS CARGADOS EN EL ARCHIVO EMPLEADOS.BIN
     FILE *archi = fopen("empleados.bin", "rb");
     if (archi == NULL) {
         printf("\n ERROR AL ABRIR EL ARCHIVO.");
@@ -165,17 +201,20 @@ void mostrarEmpleados() {
     fclose(archi);
 }
 
-void borrarEmpleadoPorDNI(int dni) {
+void borrarEmpleadoPorDNI() {///BORRA EMPLEADOS POR DNI EN EL ARCHIVOS EMPLEADOS.BIN
+    int dni = 0;
+    printf("\nINGRESE EL DNI DEL EMPLEADO A ELIMINAR: ");
+    scanf(" %d",&dni);
     FILE *archi = fopen("empleados.bin", "rb");
     if (archi == NULL) {
-        printf("Error al abrir el archivo de empleados.\n");
+        printf("ERROR AL ABRIR EL ARCHIVO DE EMPLEADOS.\n");
         return;
     }
 
     FILE *temp = fopen("temp.bin", "wb"); // Archivo temporal para escribir empleados válidos
     if (temp == NULL) {
         fclose(archi);
-        printf("Error al abrir el archivo temporal.\n");
+        printf("ERROR AL ABRIR EL ARCHIVO TEMPORAL.\n");
         return;
     }
 
