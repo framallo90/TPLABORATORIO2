@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "ARBOLES.h"
+
 
 #define clear system("cls")
 #define pausa system("pause")
@@ -14,32 +16,20 @@ typedef struct empleados_laboratorio {///USUARIOS QUE VAN A LOGUEAR
     char perfil[20];
 } empleados_laboratorio;
 
-typedef struct paciente{
-    char NyA[40];
-    int Edad;
-    int DNI;
-    char Direccion[30];
-    char telefono[15];
-    int Eliminado;
-}paciente;
-
-typedef struct nodoPaciente {/// ARBOL
-    paciente dato;
-    struct ingresos *listaIngresos; // Puntero a la lista de ingresos asociados a este paciente
-    struct paciente *izq; // Puntero al hijo izquierdo en el árbol (menor DNI)
-    struct paciente *der; // Puntero al hijo derecho en el árbol (mayor DNI)
-} nodoPaciente;
-
-typedef struct ingresos {///PRIMERA LISTA QUE SE DESPRENDE DEL ARBOL DE PACIENTES
-    int NroDeIngreso;
+typedef struct ingresos{///DATO PARA LISTA DE INGRESOS
+     int NroDeIngreso;
     char FechaDeIngreso[10];
     char FechaDeRetiro[10];
     int DniPaciente;
     int MatriculaDelProfesionalSolicitante;
     int Eliminado;
+}ingresos;
+
+typedef struct nodoIngresos {///PRIMERA LISTA DE INGRESOS QUE SE DESPRENDE DEL ARBOL DE PACIENTES
+    ingresos dato;
     struct pracXingreso *listaPracticasXingreso; // Puntero a la lista de prácticas asociadas a este ingreso
     struct ingresos *siguiente; // Puntero al siguiente ingreso en la lista de ingresos
-} ingresos;
+} nodoIngresos;
 
 typedef struct practicas {
     int NroDePractica;
@@ -47,17 +37,21 @@ typedef struct practicas {
     int Eliminado;
 } practicas;
 
-typedef struct pracXingreso {///SEGUNDA LISTA QUE SE DESPRENDE DE LA LISTA DE INGRESOS
+typedef struct pracXingreso {///DATO PARA PRACTICA POR INGRESO
     int NroDeIngreso;
     int NroDePractica;
     char Resultado[40];
+}pracXingreso;
+
+typedef struct nodoPracXingreso {///SEGUNDA LISTA DE PRACTICAS POR INGRESO QUE SE DESPRENDE DE LA LISTA DE INGRESOS
+    pracXingreso dato;
     struct pracXingreso *siguiente;
-} pracXingreso;
+} nodoPracXingreso;
 
 int main() {
 
 
-    altaEmpleado();
+    /*** altaEmpleado();
     mostrarEmpleadosEnArchivo();
     borrarEmpleadoPorDNI();
     modificarEmpleadoPorDNI();
@@ -68,11 +62,17 @@ int main() {
     modificarPacientePorDNI();
 
     altaDePracticas();
-    mostrarPracticas();
+    mostrarPracticas();   ***/
+    nodoPaciente* arbol = cargarPacientesDesdeArchivo();
+    inorder(arbol);
+
 
 
     return 0;
 }
+
+
+
 
 
 /// FUNCIONES PARA ARCHIVO EMPLEADOS
@@ -164,7 +164,7 @@ bool empleadoExiste(int dni) {/// TRUE OR FALSE, SI EL EMPLEADO EXISTE O NO EN E
     return false; // El empleado no existe en el archivo
 }
 
-void altaEmpleado() {/// PIDE DNI, COMPRUEBA QUE NO EXISTA Y COMIENZA EL ALTA. UTILIZA INGRESO EMPLEADO Y EMPLEADO EXISTE
+void altaEmpleado() {/// PIDE DNI, COMPRUEBA QUE NO EXISTA Y COMIENZA EL ALTA. UTILIZA INGRESO EMPLEADO Y EMPLEADO EXISTE //REVISAR GUARDADO
     int dni;
     printf("\nINGRESE EL DNI DEL EMPLEADO: ");
     scanf("%d", &dni);
@@ -388,14 +388,6 @@ paciente IngresoPaciente() {///INGRESA DATOS DE PACIENTES E INICIALIZA LOS PUNTE
     nuevo.Eliminado = 0; // Por defecto, el paciente no esta dado de baja
 
     return nuevo;
-}
-
-nodoPaciente* crearNodo(paciente dato){
-    nodoPaciente* nuevo = (nodoPaciente*)malloc(sizeof(nodoPaciente));
-    nuevo->dato = dato;
-    nuevo->listaIngresos = NULL;
-    nuevo->izq = NULL;
-    nuevo->der = NULL;
 }
 
 bool pacienteExiste(int dni) {/// TRUE OR FALSE, SI EL PACIENTE EXISTE O NO EN EL ARCHIVO PACIENTES.BIN, SE USA EN ALTA PACIENTE.

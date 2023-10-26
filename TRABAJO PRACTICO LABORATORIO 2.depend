@@ -11,9 +11,18 @@
 	<string.h>
 	<stdbool.h>
 
-1698348578 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\main.c
+1698617478 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
+	"ARBOLES.h"
+
+1698617411 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1698617411 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.c
+	"ARBOLES.h"
 
