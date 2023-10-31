@@ -1,10 +1,10 @@
 #include "ARBOLES.h"
 
-nodoPaciente* inicArbol(){
+nodoPaciente* inicArbol(){///INICIA EL ARBOL EN NULL
     return NULL;
 }
 
-nodoPaciente* crearNodo(paciente dato){
+nodoPaciente* crearNodo(paciente dato){///CREA EL NODO DEL ARBOL CON LOS DATOS DEL PACIENTE
     nodoPaciente* nuevo = (nodoPaciente*)malloc(sizeof(nodoPaciente));
     nuevo->dato = dato;
     nuevo->listaIngresos = NULL;
@@ -12,7 +12,7 @@ nodoPaciente* crearNodo(paciente dato){
     nuevo->der = NULL;
 }
 
-void inorder(nodoPaciente* arbol){
+void inorder(nodoPaciente* arbol){///MUESTRA EL ARBOL EN ORDEN
     if(arbol != NULL){
         inorder(arbol->izq);
         printf("\nNOMBRE Y APELLIDO: %s, ", arbol->dato.NyA);
@@ -60,7 +60,7 @@ void postorder(nodoPaciente* arbol){
     }
 }
 
-nodoPaciente* buscar(nodoPaciente* arbol, int dni){
+nodoPaciente* buscar(nodoPaciente* arbol, int dni){///BUSCA PACIENTE POR DNI EN EL ARBOL
     nodoPaciente * rta=NULL;
     if(arbol!=NULL){
         if(dni == arbol->dato.DNI){
@@ -78,7 +78,7 @@ nodoPaciente* buscar(nodoPaciente* arbol, int dni){
     return rta;
 }
 
-nodoPaciente* insertarEnArbol(nodoPaciente* arbol, nodoPaciente* nuevo) {
+nodoPaciente* insertarEnArbol(nodoPaciente* arbol, nodoPaciente* nuevo) {///INSERTA EL NODO EN EL ARBOL POR DNI
     if (arbol == NULL) {
         arbol=nuevo;
     }
@@ -92,10 +92,10 @@ nodoPaciente* insertarEnArbol(nodoPaciente* arbol, nodoPaciente* nuevo) {
     return arbol;
 }
 
-nodoPaciente* cargarPacientesDesdeArchivo() {
+nodoPaciente* cargarPacientesDesdeArchivo() {///LEE EL ARCHIVO PACIENTES COPIANDO LOS DATOS DE LOS QUE ESTAN GUARDADOS, LLAMA A INSERTAR Y LOS GUARDA EN EL ARBOL
     FILE *archivo = fopen("pacientes.bin", "rb");
     if (archivo == NULL) {
-        printf("No se pudo abrir el archivo de pacientes.\n");
+        printf("\nNO SE PUDO ABRIR EL ARCHIVO DE PACIENTES.");
         return NULL;
     }
 
