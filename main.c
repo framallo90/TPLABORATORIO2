@@ -54,15 +54,18 @@ int main() {
     /*** altaEmpleado();
     mostrarEmpleadosEnArchivo();
     borrarEmpleadoPorDNI();
-    modificarEmpleadoPorDNI();
+    modificarEmpleadoPorDNI();***/
     mostrarEmpleadosEnArchivo();
 
-    altaPaciente();
+
+   /***
+    altaPaciente();***/
     mostrarPacientes();
     modificarPacientePorDNI();
 
-    altaDePracticas();
-    mostrarPracticas();   ***/
+
+     /***altaDePracticas();***/
+    mostrarPracticas();
     nodoPaciente* arbol = cargarPacientesDesdeArchivo();
     inorder(arbol);
 
@@ -369,7 +372,6 @@ void modificarEmpleadoPorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO EMPLEADOS.BIN Y
 
 
 /// FUNCIONES PARA ARCHIVO PACIENTES
-
 paciente IngresoPaciente() {///INGRESA DATOS DE PACIENTES E INICIALIZA LOS PUNTEROS EN NULL.
     paciente nuevo;
     printf("\nAPELLIDO Y NOMBRE DEL PACIENTE: ");
@@ -627,4 +629,37 @@ void modificarPracticaPorNumero() {///PIDE NUMERO DE PRACT. SI LO ENCUENTRA DEJA
     }
 }
 //FALTA DAR DE BAJA
+
+///FUNCIONES PARA ARCHIVO DE PRACTICAS X INGRESO
+pracXingreso nuevaPracticaXingreso(){
+    pracXingreso nueva;
+    printf("\nNRO DE INGRESO: ");
+    scanf(" %d",&nueva.NroDeIngreso);
+    printf("\nNRO DE PRACTICA: ");
+    scanf(" %d",&nueva.NroDePractica);
+    printf("\nRESULTADO:\n");
+    scanf("    %s",&nueva.Resultado);
+
+    return nueva;
+}asdasdasd
+
+
+///FUNCIONES PARA ARCHIVO DE INGRESOS
+ingresos nuevoIngreso(){
+    ingresos nuevo;
+    printf("\nNRO DE INGRESO: ");
+    scanf(" %d",&nuevo.NroDeIngreso);
+    printf("\nFECHA DE INGRESO d/m/aaaa : ");
+    scanf(" %s",&nuevo.FechaDeIngreso);
+    printf("\nFECHA DE RETIRO d/m/aaaa : ");
+    scanf(" %s",&nuevo.FechaDeRetiro);
+    printf("\nDNI PACIENTE: ");
+    scanf(" %d",&nuevo.DniPaciente);
+    printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
+    scanf(" %d",&nuevo.MatriculaDelProfesionalSolicitante);
+    nuevo.Eliminado = 0;
+
+    return nuevo;
+}
+
 
