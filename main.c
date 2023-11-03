@@ -3,7 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "ARBOLES.h"
-
+/// TERMINAR USUARIOS DE EMPLEADOS, HACER MENU, METER EN LIBRERIA.
 
 #define clear system("cls")
 #define pausa system("pause")
@@ -61,13 +61,13 @@ int main() {
    /***
     altaPaciente();***/
     mostrarPacientes();
-    modificarPacientePorDNI();
+     /***modificarPacientePorDNI();***/
 
 
      /***altaDePracticas();***/
     mostrarPracticas();
-    nodoPaciente* arbol = cargarPacientesDesdeArchivo();
-    inorder(arbol);
+     /***nodoPaciente* arbol = cargarPacientesDesdeArchivo();
+    inorder(arbol);***/
 
 
 
@@ -567,25 +567,25 @@ void mostrarPracticas() {
     if (archi == NULL) {
         printf("\n ERROR AL ABRIR EL ARCHIVO DE PRACTICAS.\n");
         return;
+    }else{
+
+        practicas practica;
+        int contador = 0;
+
+        printf("\nPRACTICAS REGISTRADAS:\n");
+
+        while (fread(&practica, sizeof(practicas), 1, archi) == 1) {
+
+            printf("\nNro DE PRACTICA: %d", practica.NroDePractica);
+            printf("\n   NOMBRE DE PRACTICA: %s", practica.NombreDePractica);
+            if(practica.Eliminado == 0){
+                printf("\nLA PRACTICA ESTA ACTIVA.");
+            }else{
+                printf("\nESTA PRACTICA NO SE ENCUENTRA ACTIVA.");
+            }
+        }
+
     }
-
-    practicas practica;
-    int contador = 0;
-
-    printf("\nPRACTICAS REGISTRADAS:\n");
-
-    while (fread(&practica, sizeof(practicas), 1, archi) == 1) {
-        contador++;
-        printf("\n%d) Nro DE PRACTICA: %d", contador, practica.NroDePractica);
-        printf("\n   NOMBRE DE PRACTICA: %s", practica.NombreDePractica);
-        //printf("\n   ESTADO: %s\n", (practica.Eliminado == 0) ? "Activo" : "Inactivo");
-        ///VER SI CON EL ESTADO 0 ESTA ACTIVO Y CON 1 DADO DE BAJA Y DEBE SER ELIMINNADO DEL ARCHIVO, O DEJARLO Y MOSTRAR QUE ESTA DADO DE BAJA PARA UN HISTORIAL.
-    }
-
-    if (contador == 0) {
-        printf("\nNO HAY PRACTICAS REGISTRADAS EN EL ARCHIVO.\n");
-    }
-
     fclose(archi);
 }
 
@@ -641,8 +641,7 @@ pracXingreso nuevaPracticaXingreso(){
     scanf("    %s",&nueva.Resultado);
 
     return nueva;
-}asdasdasd
-
+}
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
 ingresos nuevoIngreso(){
