@@ -11,18 +11,35 @@
 	<string.h>
 	<stdbool.h>
 
-1698975369 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\main.c
+1699560596 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"ARBOLES.h"
+	"FuncArchivos.h"
+
+1699557449 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"FuncArchivos.h"
+
+1698622378 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.c
+	"ARBOLES.h"
+
+1699557511 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	"ARBOLES.h"
 
-1698617411 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.h
+1699557331 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
-
-1698622378 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.c
+	<stdbool.h>
 	"ARBOLES.h"
+	"FuncArchivos.h"
 

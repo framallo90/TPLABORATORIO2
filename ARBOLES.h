@@ -4,22 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "FuncArchivos.h"
 
-typedef struct paciente{///DATO PARA EL ARBOL DE PACIENTES
-    char NyA[40];
-    int Edad;
-    int DNI;
-    char Direccion[30];
-    char telefono[15];
-    int Eliminado;
-}paciente;
-
-typedef struct nodoPaciente {/// NODO PARA EL ARBOL DE PACIENTES
-    paciente dato;
-    struct ingresos *listaIngresos; // Puntero a la lista de ingresos asociados a este paciente
-    struct paciente *izq; // Puntero al hijo izquierdo en el árbol (menor DNI)
-    struct paciente *der; // Puntero al hijo derecho en el árbol (mayor DNI)
-}nodoPaciente;
 
 nodoPaciente* inicArbol();
 paciente IngresoPaciente();
