@@ -35,6 +35,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="ARBOLES.h" />
+		<Unit filename="FuncArchivos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="FuncArchivos.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

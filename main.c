@@ -7,70 +7,104 @@
 
 #define TECLA_ENTER 13
 #define TECLA_BACKSPACE 8
-#define LONGITUD 20
+#define LONGITUD 10
 #define MAX_INTENTOS 3
 /// TERMINAR USUARIOS DE EMPLEADOS, HACER MENU, REPENSAR LOG IN.
 
 
 
 int main() {
+    int opcion;
+    char repetir = 1;
+    int perfil;
 
+    do {
+        system("cls");
 
-    /*** altaEmpleado();
-    mostrarEmpleadosEnArchivo();
-    borrarEmpleadoPorDNI();
-    modificarEmpleadoPorDNI();***/
-    mostrarEmpleadosEnArchivo();
-    login();
+        printf("\n\nHOSPITAL\n");
+        printf("1. ABRIR MENU DE ADMINISTRADOR\n");
+        printf("2. ABRIR MENU DE ADMINITRATIVO\n");
+        printf("3. ABRIR MENU DE TECNICO DE LABORATORIO\n");
+        printf("0. SALIR\n");
 
-   /***
-    altaPaciente();
-    mostrarPacientes();
-     /***modificarPacientePorDNI();***/
+        printf("\nINGRESE UNA OPCION: ");
+        scanf("%d", &opcion);
 
+        switch (opcion) {
+            case 1:
+                perfil = login();
+                if(perfil == 1){
+                     printf("\n\tACA VA EL MENU DE ADMIN");
+                }else{
+                    printf("\n\tESTE PERFIL NO ES ADMIN.\n");
+                }
 
-     /***altaDePracticas();
-    mostrarPracticas();
-    nodoPaciente* arbol = cargarPacientesDesdeArchivo();
-    inorder(arbol);***/
+                system("pause>nul"); // Pausa
+                break;
 
+            case 2:
+                perfil = login();
+                if(perfil == 2){
+                     printf("\n\tACA VA EL MENU DE ADMINISTRATIVO");
+                }else{
+                    printf("\n\tESTE PERFIL NO ES ADMINISTRATIVO.\n");
+                }
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 3:
+                perfil = login();
+                if(perfil == 3){
+                     printf("\n\tACA VA EL MENU DE TEC. DE LABORATORIO");
+                }else{
+                    printf("\n\tESTE PERFIL NO ES TECNICO DE LABORATORIO.\n");
+                }
+                system("pause>nul"); // Pausa
+                break;
+
+            case 0:
+            	repetir = 0;
+            	break;
+        }
+    } while (repetir);
 
 
     return 0;
 }
 
 
-int login(){///HACER QUE DEVUELVA 1 2 o 3 SEGUN ADMINISTRADOR TEC DE LAB O ADMINISTRATIVO.
+int login(){
    	char usuario[LONGITUD + 1];
 	char clave[LONGITUD + 1];
 	int intento = 0;
 	int ingresa = 0;
+	int perfil;
 	char caracter;
 	int i = 0;
     int j = 0;
 
 
 	do {
-		i = 0;
+        i = 0;
 		system("cls");
 		printf("\n\t\t\tINICIO DE SESION\n");
 		printf("\t\t\t---------------\n");
 		printf("\n\tUSUARIO: ");
+		fflush(stdin);
 		gets(usuario);
 		printf("\tCLAVE: ");
 		while (caracter = getch()) {
 			if (caracter == TECLA_ENTER) {
-                clave[i] = '\0';
+				clave[i] = '\0';
 				break;
-
-			} else if (caracter == TECLA_BACKSPACE) {
+            }else if (caracter == TECLA_BACKSPACE) {
 				if (i > 0) {
 					i--;
 					printf("\b \b");
 				}
-
-			} else {
-				if (i < LONGITUD) {
+			}else{
+                if (i < LONGITUD) {
 					printf("*");
 					clave[i] = caracter;
 					i++;
@@ -78,7 +112,6 @@ int login(){///HACER QUE DEVUELVA 1 2 o 3 SEGUN ADMINISTRADOR TEC DE LAB O ADMIN
 			}
 		}
 
-        /* El usuario y clave debe coincidir con alguno de los que se encuentran en el array */
         FILE*archi = fopen("empleados.bin","rb");
         empleados_laboratorio logueo;
         if(archi != NULL){
@@ -87,6 +120,13 @@ int login(){///HACER QUE DEVUELVA 1 2 o 3 SEGUN ADMINISTRADOR TEC DE LAB O ADMIN
                 ingresa = 1;
                 break;
             }
+        }
+        if(strcmp(logueo.perfil,"ADMIN")==0){
+            perfil = 1;
+        }else if(strcmp(logueo.perfil,"ADMINISTRATIVO")==0){
+            perfil = 2;
+        }else{
+            perfil = 3;
         }
         fclose(archi);
 
@@ -111,6 +151,6 @@ int login(){///HACER QUE DEVUELVA 1 2 o 3 SEGUN ADMINISTRADOR TEC DE LAB O ADMIN
 		printf("\n\n\tHa sobrepasado el numero maximo de intentos permitidos\n");
 	}
 
-	return ingresa;
+	return perfil;
 }
 
