@@ -185,10 +185,10 @@ void borrarEmpleadoPorDNI() {///BORRA EMPLEADOS POR DNI EN EL ARCHIVOS EMPLEADOS
         // Reemplazamos el archivo original con el archivo temporal
         remove("empleados.bin");
         rename("temp.bin", "empleados.bin");
-        printf("Empleado con DNI %d eliminado con éxito.\n", dni);
+        printf("EMPLEADO CON DNI %d ELIMINADO EXITOSAMENTE.\n", dni);
     } else {
         remove("temp.bin"); // Si no se encontró al empleado, eliminamos el archivo temporal
-        printf("Empleado con DNI %d no encontrado.\n", dni);
+        printf("EL EMPLEADO CON DNI %d, NO EXISTE EN EL ARCHIVO.\n", dni);
     }
 }
 
