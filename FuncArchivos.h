@@ -74,6 +74,10 @@ void modificarEmpleadoPorDNI();
 paciente IngresoPaciente();
 bool pacienteExiste(int dni);
 void altaPaciente();
+void mostrarPacientes();
+void modificarPacientePorDNI();
+///FALTA BAJA PACIENTE
+
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS
 practicas ingresoPracticas();
