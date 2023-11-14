@@ -573,6 +573,8 @@ pracXingreso nuevaPracticaXingreso(){
 }
 
 
+
+
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
 ingresos nuevoIngreso(){
     ingresos nuevo;
@@ -591,4 +593,33 @@ ingresos nuevoIngreso(){
     return nuevo;
 }
 
+void altaIngreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILIZA NUEVO INGRESO Y PACIENTE EXISTE
+    ingresos nuevo;
+    int dni;
+
+    printf("\nDNI DEL PACIENTE: ");
+    scanf("%d", &dni);
+
+    if (pacienteExiste(dni!=true)) {//quiere decir si paciente dni no es "TRUE"...
+        printf("\nEL PACIENTE CON DNI %d NO SE ENCUENTRA EN EL ARCHIVO.", dni);
+        return;
+    }
+
+    // en cambio si devuelve "true", saltea el if.
+    nuevo = nuevoIngreso();
+
+    FILE *archi = fopen("ingresos.bin", "ab");
+    if (archi == NULL) {
+        printf("\nERROR AL ABRIR EL ARCHIVO.");
+        return;
+    }
+
+    if (fwrite(&nuevo, sizeof(ingresos), 1, archi) != 1) {
+        printf("\nERROR AL ESCRIBIR EN EL ARCHIVO.");
+    } else {
+        printf("\nPACIENTE AGREGADO CON EXITO.");
+    }
+
+    fclose(archi);
+}
 

@@ -21,10 +21,11 @@ int main() {
     do {
         system("cls");
 
-        printf("\n\nHOSPITAL\n");
-        printf("1. ABRIR MENU DE ADMINISTRADOR\n");
-        printf("2. ABRIR MENU DE ADMINITRATIVO\n");
-        printf("3. ABRIR MENU DE TECNICO DE LABORATORIO\n");
+        printf("\n\n\t HOSPITAL \n");
+        printf("\n\nDESEA INICIAR SESION COMO:\n");
+        printf("1. ADMINISTRADOR\n");
+        printf("2. ADMINITRATIVO\n");
+        printf("3. PROFESIONAL DE LABORATORIO\n");
         printf("0. SALIR\n");
 
         printf("\nINGRESE UNA OPCION: ");
@@ -56,7 +57,7 @@ int main() {
             case 3:
                 perfil = login();
                 if(perfil == 3){
-                     printf("\n\tACA VA EL MENU DE TEC. DE LABORATORIO");
+                     printf("\n\tACA VA EL MENU DE PROF. DE LABORATORIO");
                 }else{
                     printf("\n\tESTE PERFIL NO ES TECNICO DE LABORATORIO.\n");
                 }
@@ -315,6 +316,84 @@ void menuAdministrador(){
 
             case 3:
                 menuArchivoPracticas();
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 0:
+            	repetir = 0;
+            	break;
+            }
+        }while (repetir);
+}
+
+void menuAdministrativo(){
+    int opcion;
+    int repetir = 1;
+        do {
+        system("cls");
+
+        printf("\n\nMENU ADMINISTRATIVO\n");
+        printf("1. .\n");
+        printf("2. .\n");
+        printf("3. .\n");
+        printf("0. SALIR\n");
+
+        printf("\nINGRESE UNA OPCION: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 2:
+
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 3:
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 0:
+            	repetir = 0;
+            	break;
+            }
+        }while (repetir);
+}
+
+void menuProfesionalLaboratorio(){
+    int opcion;
+    int repetir = 1;
+        do {
+        system("cls");
+
+        printf("\n\nMENU PROFESIONAL DE LABORATORIO\n");
+        printf("1. .\n");
+        printf("2. .\n");
+        printf("3. .\n");
+        printf("0. SALIR\n");
+
+        printf("\nINGRESE UNA OPCION: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 2:
+
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 3:
 
                 system("pause>nul"); // Pausa
                 break;
