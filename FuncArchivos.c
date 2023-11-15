@@ -475,6 +475,11 @@ void bajaPaciente(){///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA
             encontrado = 1;
             printf("\nPACIENTE ENCONTRADO:\n");
             muestroUnPaciente(nuevo);
+            int ver = verIngresosAsoc(dni);
+            if(ver == 1){
+                printf("\nEL PACIENTE TIENE INGRESOS ASOCIADOS NO PUEDE DARSE DE BAJA.");
+                }
+
             printf("\nDANDO DE BAJA....");
             nuevo.Eliminado = 1;
 
