@@ -368,6 +368,20 @@ void altaPaciente() {/// PIDE DNI, COMPRUEBA QUE NO EXISTA Y COMIENZA EL ALTA. U
     fclose(archi);
 }
 
+void muestroUnPaciente(paciente paciente){
+
+        printf("\nNOMBRE Y APELLIDO: %s", paciente.NyA);
+        printf("\nEDAD: %d", paciente.Edad);
+        printf("\nDNI: %d", paciente.DNI);
+        printf("\nDIRECCION: %s", paciente.Direccion);
+        printf("\nTELEFONOS: %s", paciente.telefono);
+        if(paciente.Eliminado == 0 ){
+            printf("\nEL PACIENTE ESTA DADO DE ALTA.");
+        }else{
+            printf("\nEL PACIENTE ESTA DADO DE BAJA.");
+        }
+}
+
 void mostrarPacientes() {///MUESTRA PACIENTES POR DNI EN EL ARCHIVO DE PACIENTES.BIN
     FILE *archi = fopen("pacientes.bin", "rb");
     if (archi == NULL) {
@@ -381,17 +395,12 @@ void mostrarPacientes() {///MUESTRA PACIENTES POR DNI EN EL ARCHIVO DE PACIENTES
     while (fread(&paciente, sizeof(paciente), 1, archi) == 1) {
         contador++;
         printf("\nPACIENTE #%d)", contador);
-        printf("\nNOMBRE Y APELLIDO: %s", paciente.NyA);
-        printf("\nEDAD: %d", paciente.Edad);
-        printf("\nDNI: %d", paciente.DNI);
-        printf("\nDIRECCION: %s", paciente.Direccion);
-        printf("\nTELEFONOS: %s", paciente.telefono);
-        printf("\nELIMINADO: %d", paciente.Eliminado);
+        muestroUnPaciente(paciente);
         printf("\n");
     }
 
     if (contador == 0) {
-        printf("No hay pacientes registrados en el archivo.\n");
+        printf("NO HAY PACIENTES REGISTRADOS EN EL ARCHIVO.\n");
     }
 
     fclose(archi);
@@ -415,11 +424,7 @@ void modificarPacientePorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BI
         if (nuevo.DNI == dni) {
             encontrado = 1;
             printf("\nPACIENTE ENCONTRADO:\n");
-            printf("\nNOMBRE Y APELLIDO: %s", nuevo.NyA);
-            printf("\nDNI: %d", nuevo.DNI);
-            printf("\nEDAD: %d", nuevo.Edad);
-            printf("\nTELEFONO: %s", nuevo.telefono);
-            printf("\nDIRECCION: %s", nuevo.Direccion);
+            muestroUnPaciente(nuevo);
 
             // Realizar modificaciones
             printf("\nINGRESE LA NUEVA INFORMACION:\n");
@@ -450,8 +455,59 @@ void modificarPacientePorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BI
         printf("PACIENTE DNI %d NO ENCONTRADO.\n", dni);
     }
 }
-//FALTA BAJA DE PACIENTE CON VERIFICACION DE INGRESOS ASOCIADOS.
 
+void bajaPaciente(){///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
+    int dni;
+    printf("\nINGRESE EL DNI DEL PACIENTE A MODIFICAR: ");
+    scanf("%d", &dni);
+
+    FILE *archi = fopen("pacientes.bin", "rb+");
+    if (archi == NULL) {
+        printf("\nERROR AL ABRIR EL ARCHIVO DE PACIENTES.");
+        return;
+    }
+
+    paciente nuevo;
+    int encontrado = 0; // Flag
+
+    while (fread(&nuevo, sizeof(paciente), 1, archi) == 1) {
+        if (nuevo.DNI == dni) {
+            encontrado = 1;
+            printf("\nPACIENTE ENCONTRADO:\n");
+            muestroUnPaciente(nuevo);
+            printf("\nDANDO DE BAJA....");
+            nuevo.Eliminado = 1;
+
+            fseek(archi, -sizeof(paciente), SEEK_CUR); // Retrocede al inicio del registro como el rewind(archi)
+            fwrite(&nuevo, sizeof(paciente), 1, archi); // Sobrescribe el registro modificado
+            printf("\nPACIENTE DADO DE BAJA CON EXITO.\n");
+            break;
+        }
+    }
+
+    fclose(archi);
+
+    if (!encontrado) {
+        printf("PACIENTE DNI %d NO ENCONTRADO.\n", dni);
+    }
+}
+
+int verIngresosAsoc(int dni){
+    int flag= 0;
+    ingresos nuevo;
+    FILE* archi = fopen("ingresos.bin","rb");
+    if(archi != NULL){
+        while(fread(&nuevo, sizeof(ingresos),1,archi)>0){
+            if(dni == nuevo.DniPaciente){
+                if(nuevo.Eliminado == 0){
+                    flag = 1;
+                }
+            }
+        }
+    }
+    fclose(archi);
+    return flag;
+}
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS
 practicas ingresoPracticas() {///INGRESA LAS PRACTICAS, ELIMINADO (PARA DAR DE BAJA) ES 0 POR DEFECTO
@@ -608,7 +664,7 @@ bool ingresoExiste(int nroIngreso) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA EXI
     return false; // El ingreso no existe en el archivo
 }
 
-void altaPracticasXingreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILIZA NUEVO INGRESO Y PACIENTE EXISTE
+void altaPracticasXingreso() {/// PIDE NRO INGRESO NRO PRACTICA, COMPRUEBA QUE EXISTAN Y COMIENZA EL ALTA. UTILIZA NUEVA PRACTICAXING Y VERIF PRACT E ING
     pracXingreso nuevo;
     int nroPractica;
     int nroIngreso;
@@ -641,7 +697,70 @@ void altaPracticasXingreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL A
     fclose(archi);
 }
 
+void modificarPracXingreso() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
+    int nroIngreso;
+    printf("\nINGRESE EL NRO. DE INGRESO ASOCIADO A LA PRACTICA QUE QUIERE MODIFICAR: ");
+    scanf("%d", &nroIngreso);
 
+    FILE *archi = fopen("pracXingresos.bin", "rb+");
+    if (archi == NULL) {
+        printf("\nERROR AL ABRIR EL ARCHIVO DE PRACT. POR INGRESOS.");
+        return;
+    }
+
+    pracXingreso nuevo;
+    int encontrado = 0; // Flag
+
+    while (fread(&nuevo, sizeof(pracXingreso), 1, archi) == 1) {
+        if (nuevo.NroDeIngreso == nroIngreso) {
+            encontrado = 1;
+            printf("\nPRACTICA POR INGRESO ENCONTRADA:\n");
+            printf("\nNUMERO DE PRACTICA: %d", nuevo.NroDePractica);
+            printf("\nRESULTADO: %s", nuevo.Resultado);
+
+            // Realizar modificaciones
+            printf("\nINGRESE LA NUEVA INFORMACION:\n");
+            printf("\nNUMERO DE PRACTICA: ");
+            scanf("%d", &nuevo.NroDePractica);
+            printf("\nRESULTADO: ");
+            scanf("%s", &nuevo.Resultado);
+
+            fseek(archi, -sizeof(pracXingreso), SEEK_CUR); // Retrocede al inicio del registro como el rewind(archi)
+            fwrite(&nuevo, sizeof(pracXingreso), 1, archi); // Sobrescribe el registro modificado
+            printf("\nPRACTICA POR INGRESO MODIFICADA CON EXITO.\n");
+            break;
+        }
+    }
+
+    fclose(archi);
+
+    if (!encontrado) {
+        printf("INGRESO NRO %d NO ENCONTRADO.\n", nroIngreso);
+    }
+}
+
+void mostrarPracticasXingreso() {
+    FILE *archi = fopen("pracXingresos.bin", "rb");
+    if (archi == NULL) {
+        printf("\n ERROR AL ABRIR EL ARCHIVO DE PRACTICAS POR INGRESOS.\n");
+        return;
+    }else{
+
+        pracXingreso practica;
+
+        printf("\nPRACTICAS X INGRESOS REGISTRADAS:\n");
+
+        while (fread(&practica, sizeof(pracXingreso), 1, archi) == 1) {
+
+            printf("\n=====================================================");
+            printf("\nNUMERO DE INGRESO: %d",practica.NroDeIngreso);
+            printf("\nNUMERO DE PRACTICA: %d", practica.NroDePractica);
+            printf("\nRESULTADO: %s", practica.Resultado);
+        }
+
+    }
+    fclose(archi);
+}
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
 ingresos nuevoIngreso(){
@@ -709,8 +828,8 @@ void modificarIngresoPorNro() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN
         if (nuevo.NroDeIngreso == nroIngreso) {
             encontrado = 1;
             printf("\nPACIENTE ENCONTRADO:\n");
-            printf("\nFECHA DE INGRESO: %d", nuevo.FechaDeIngreso);
-            printf("\nFECHA DE RETIRO: %d", nuevo.FechaDeRetiro);
+            printf("\nFECHA DE INGRESO: %s", nuevo.FechaDeIngreso);
+            printf("\nFECHA DE RETIRO: %s", nuevo.FechaDeRetiro);
             printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: %d", nuevo.MatriculaDelProfesionalSolicitante);
             printf("\nDNI DEL PACIENTE: %d", nuevo.DniPaciente);
             if(nuevo.Eliminado == 0){
@@ -724,14 +843,16 @@ void modificarIngresoPorNro() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN
             // Realizar modificaciones
             printf("\nINGRESE LA NUEVA INFORMACION:\n");
             printf("\nFECHA DE INGRESO: ");
-            scanf("%d", &nuevo.FechaDeIngreso);
+            fflush(stdin);
+            scanf("%s", &nuevo.FechaDeIngreso);
             printf("\nFECHA DE RETIRO: ");
-            scanf("%d", &nuevo.FechaDeRetiro);
+            fflush(stdin);
+            scanf("%s", &nuevo.FechaDeRetiro);
             printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
             scanf("%d", &nuevo.MatriculaDelProfesionalSolicitante);
 
-            fseek(archi, -sizeof(paciente), SEEK_CUR); // Retrocede al inicio del registro como el rewind(archi)
-            fwrite(&nuevo, sizeof(paciente), 1, archi); // Sobrescribe el registro modificado
+            fseek(archi, -sizeof(ingresos), SEEK_CUR); // Retrocede al inicio del registro como el rewind(archi)
+            fwrite(&nuevo, sizeof(ingresos), 1, archi); // Sobrescribe el registro modificado
             printf("\nPACIENTE MODIFICADO CON EXITO.\n");
             break;
         }
@@ -744,5 +865,35 @@ void modificarIngresoPorNro() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN
     }
 }
 
-///FALTA BJAA DE INGRESO, DEBE DAR DE BAJA LAS PRACTICAS ASOCIADAS AL INGRESO
+void mostrarIngresos() {
+    FILE *archi = fopen("ingresos.bin", "rb");
+    if (archi == NULL) {
+        printf("\n ERROR AL ABRIR EL ARCHIVO DE INGRESOS.\n");
+        return;
+    }else{
+
+        ingresos nuevo;
+        int contador = 0;
+
+        printf("\nPRACTICAS X INGRESOS REGISTRADAS:\n");
+
+        while (fread(&nuevo, sizeof(ingresos), 1, archi) == 1) {
+
+            printf("\n=====================================================");
+            printf("\nNUMERO DE INGRESO: %d",nuevo.NroDeIngreso);
+            printf("\nFECHA DE INGRESO: %s", nuevo.FechaDeIngreso);
+            printf("\nFECHA DE RETIRO: %s", nuevo.FechaDeRetiro);
+            printf("\nDNI DEL PACIENTE: %d",nuevo.DniPaciente);
+            printf("\nMATRICULA DEL PROFESIONAL: %d",nuevo.MatriculaDelProfesionalSolicitante);
+            if(nuevo.Eliminado == 0 ){
+                printf("\nEL INGRESO SE ENCUENTRA ACTIVO.");
+            }else{
+                printf("\nEL INGRESO ESTA DADO DE BAJA.");
+            }
+        }
+
+    }
+    fclose(archi);
+}
+//FALTA BAJA DE INGRESO, DEBE DAR DE BAJA LAS PRACTICAS ASOCIADAS AL INGRESO
 
