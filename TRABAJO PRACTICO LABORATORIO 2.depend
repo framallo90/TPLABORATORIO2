@@ -28,14 +28,14 @@
 1698622378 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.c
 	"ARBOLES.h"
 
-1700073050 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.h
+1700073187 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	"ARBOLES.h"
 
-1700067821 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.c
+1700073295 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>

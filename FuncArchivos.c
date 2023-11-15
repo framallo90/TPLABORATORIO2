@@ -514,6 +514,7 @@ int verIngresosAsoc(int dni){
     return flag;
 }
 
+
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS
 practicas ingresoPracticas() {///INGRESA LAS PRACTICAS, ELIMINADO (PARA DAR DE BAJA) ES 0 POR DEFECTO
     practicas practica;
@@ -766,6 +767,7 @@ void mostrarPracticasXingreso() {
     }
     fclose(archi);
 }
+
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
 ingresos nuevoIngreso(){

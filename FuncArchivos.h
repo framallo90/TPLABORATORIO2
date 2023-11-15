@@ -78,7 +78,7 @@ void muestroUnPaciente(paciente paciente);
 void mostrarPacientes();
 void modificarPacientePorDNI();
 void bajaPaciente();
-
+int verIngresosAsoc(int dni);
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS
 practicas ingresoPracticas();
