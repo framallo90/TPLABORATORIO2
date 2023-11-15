@@ -572,6 +572,74 @@ pracXingreso nuevaPracticaXingreso(){
     return nueva;
 }
 
+bool practicaExiste(int nroPractica) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA EXISTE O NO EN EL ARCHIVO PRACTICAS.BIN, SE USA EN ALTA PRACTICA
+    FILE *archi = fopen("practicas.bin", "rb");
+    if (archi == NULL) {
+        return false; // Si no se puede abrir el archivo, asumimos que la practica no existe
+    }
+
+    practicas practica;
+    while (fread(&practica, sizeof(practicas), 1, archi) == 1) {
+        if (practica.NroDePractica == nroPractica) {
+            fclose(archi);
+            return true; // La practica ya existe en el archivo
+        }
+    }
+
+    fclose(archi);
+    return false; // La practica no existe en el archivo
+}
+
+bool ingresoExiste(int nroIngreso) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA EXISTE O NO EN EL ARCHIVO PRACTICAS.BIN, SE USA EN ALTA PRACTICA
+    FILE *archi = fopen("ingresos.bin", "rb");
+    if (archi == NULL) {
+        return false; // Si no se puede abrir el archivo, asumimos que el ingreso no existe
+    }
+
+    ingresos ingreso;
+    while (fread(&ingreso, sizeof(ingresos), 1, archi) == 1) {
+        if (ingreso.NroDeIngreso == nroIngreso) {
+            fclose(archi);
+            return true; // El ingreso existe en el archivo
+        }
+    }
+
+    fclose(archi);
+    return false; // El ingreso no existe en el archivo
+}
+
+void altaPracticasXingreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILIZA NUEVO INGRESO Y PACIENTE EXISTE
+    pracXingreso nuevo;
+    int nroPractica;
+    int nroIngreso;
+
+    printf("\nINGRESE EL NUMERO DE PRACTICA: ");
+    scanf("%d", &nroPractica);
+    printf("\nINGRESE EL NUMERO DE INGRESO: ");
+    scanf("%d", &nroIngreso);
+
+       if (ingresoExiste(nroIngreso)!=true || practicaExiste(nroPractica)!=true) {
+        printf("\nEL INGRESO %d O LA PRACTICA %d INGRESADAS NO EXISTEN.", nroIngreso,nroPractica);
+        return;
+    }
+
+    // en cambio si devuelve "true", saltea el if.
+    nuevo = nuevaPracticaXingreso();
+
+    FILE *archi = fopen("pracXingresos.bin", "ab");
+    if (archi == NULL) {
+        printf("\nERROR AL ABRIR EL ARCHIVO.");
+        return;
+    }
+
+    if (fwrite(&nuevo, sizeof(pracXingreso), 1, archi) != 1) {
+        printf("\nERROR AL ESCRIBIR EN EL ARCHIVO.");
+    } else {
+        printf("\nPRACTICA POR INGRESO AGREGADA CON EXITO.");
+    }
+
+    fclose(archi);
+}
 
 
 
@@ -600,12 +668,12 @@ void altaIngreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILI
     printf("\nDNI DEL PACIENTE: ");
     scanf("%d", &dni);
 
-    if (pacienteExiste(dni!=true)) {//quiere decir si paciente dni no es "TRUE"...
+    if (pacienteExiste(dni)!=true) {//quiere decir si paciente dni no es "TRUE"...
         printf("\nEL PACIENTE CON DNI %d NO SE ENCUENTRA EN EL ARCHIVO.", dni);
         return;
     }
 
-    // en cambio si devuelve "true", saltea el if.
+
     nuevo = nuevoIngreso();
 
     FILE *archi = fopen("ingresos.bin", "ab");
@@ -622,4 +690,59 @@ void altaIngreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILI
 
     fclose(archi);
 }
+
+void modificarIngresoPorNro() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
+    int nroIngreso;
+    printf("\nINGRESE EL INGRESO A MODIFICAR: ");
+    scanf("%d", &nroIngreso);
+
+    FILE *archi = fopen("ingresos.bin", "rb+");
+    if (archi == NULL) {
+        printf("\nERROR AL ABRIR EL ARCHIVO DE INGRESOS.");
+        return;
+    }
+
+    ingresos nuevo;
+    int encontrado = 0; // Flag
+
+    while (fread(&nuevo, sizeof(ingresos), 1, archi) == 1) {
+        if (nuevo.NroDeIngreso == nroIngreso) {
+            encontrado = 1;
+            printf("\nPACIENTE ENCONTRADO:\n");
+            printf("\nFECHA DE INGRESO: %d", nuevo.FechaDeIngreso);
+            printf("\nFECHA DE RETIRO: %d", nuevo.FechaDeRetiro);
+            printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: %d", nuevo.MatriculaDelProfesionalSolicitante);
+            printf("\nDNI DEL PACIENTE: %d", nuevo.DniPaciente);
+            if(nuevo.Eliminado == 0){
+                    printf("\n EL INGRESO SE ENCUENTRA ACTIVO.");
+            }
+            else{
+                   printf("\n EL INGRESO ESTA DADO DE BAJA.");
+            }
+
+
+            // Realizar modificaciones
+            printf("\nINGRESE LA NUEVA INFORMACION:\n");
+            printf("\nFECHA DE INGRESO: ");
+            scanf("%d", &nuevo.FechaDeIngreso);
+            printf("\nFECHA DE RETIRO: ");
+            scanf("%d", &nuevo.FechaDeRetiro);
+            printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
+            scanf("%d", &nuevo.MatriculaDelProfesionalSolicitante);
+
+            fseek(archi, -sizeof(paciente), SEEK_CUR); // Retrocede al inicio del registro como el rewind(archi)
+            fwrite(&nuevo, sizeof(paciente), 1, archi); // Sobrescribe el registro modificado
+            printf("\nPACIENTE MODIFICADO CON EXITO.\n");
+            break;
+        }
+    }
+
+    fclose(archi);
+
+    if (!encontrado) {
+        printf("INGRESO NRO %d NO ENCONTRADO.\n", nroIngreso);
+    }
+}
+
+///FALTA BJAA DE INGRESO, DEBE DAR DE BAJA LAS PRACTICAS ASOCIADAS AL INGRESO
 
