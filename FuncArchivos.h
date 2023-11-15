@@ -74,9 +74,10 @@ void modificarEmpleadoPorDNI();
 paciente IngresoPaciente();
 bool pacienteExiste(int dni);
 void altaPaciente();
+void muestroUnPaciente(paciente paciente);
 void mostrarPacientes();
 void modificarPacientePorDNI();
-///FALTA BAJA PACIENTE
+void bajaPaciente();
 
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS
@@ -87,8 +88,16 @@ void modificarPracticaPorNumero();
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS X INGRESO
 pracXingreso nuevaPracticaXingreso();
+bool practicaExiste(int nroPractica);
+bool ingresoExiste(int nroIngreso);
+void altaPracticasXingreso();
+void modificarPracXingreso();
+void mostrarPracticasXingreso();
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
 ingresos nuevoIngreso();
+void altaIngreso();
+void modificarIngresoPorNro();
+void mostrarIngresos();
 
 #endif // FUNCARCHIVOS_H_INCLUDED
