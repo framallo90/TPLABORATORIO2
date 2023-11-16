@@ -1,4 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "ARBOLES.h"
+#include "LISTAS.h"
+#include "FuncArchivos.h"
 
 nodoPaciente* inicArbol(){///INICIA EL ARBOL EN NULL
     return NULL;

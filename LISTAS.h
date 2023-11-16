@@ -4,38 +4,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <stdbool.h>
+#include "ARBOLES.h"
+#include "LISTAS.h"
+#include "FuncArchivos.h"
 #define BORRAR_PANTALLA system("cls");
 
-typedef struct persona {
-     char nombre[20];
-     int edad;
-} persona;
+///Nodo Ingresos
 
-typedef struct nodo {
-     persona dato;
-     struct nodo *siguiente;
-} nodo;
+nodoIngresos *crearNodoIngresos(ingresos dato);
+nodoIngresos *agregarPpioIngresos(nodoIngresos *lista, nodoIngresos *nuevoNodo);
+nodoIngresos *buscarUltimoIngresos(nodoIngresos *lista);
+nodoIngresos *buscarNodoIngresos(nodoIngresos *lista, int nroIngreso);
+nodoIngresos *agregarFinalIngresos(nodoIngresos *lista, nodoIngresos *nuevoNodo);
+nodoIngresos *borrarNodoIngresos(nodoIngresos *lista, int nroIngreso);
+void mostrarUnNodoDeIngresos(nodoIngresos * lista);
+void mostrarListaDeIngreso(nodoIngresos * lista);
 
-nodo *inicLista();
-nodo *crearNodo(persona dato);
-nodo *agregarPpio(nodo *lista, nodo *nuevoNodo);
-nodo *buscarUltimo(nodo *lista);
-nodo *buscarNodo(nodo *lista, char nombre[20]);
-nodo *agregarFinal(nodo *lista, nodo *nuevoNodo);
-nodo *agregarEnOrden(nodo *lista, nodo *nuevoNodo);
-nodo *borrarNodo(nodo *lista, char nombre[20]);
-nodo *borrarTodaLaLista(nodo *lista);
-void mostrarUnNodo(nodo *aux);
-void mostrarLista(nodo *lista);
-persona creoPersona();
+///NODO PRAC X INGRESOS
 
-///CON ARCHIVOS
-void cargarPersona(char archivo[]);
-nodo *pasoAlista(char archivo[],nodo *lista);
-void pasoAlistaREF(char archivo[],nodo **lista);
-
-///borro nodo con recursividad
-nodo *borroRecursivo(nodo *lista);
+nodoPracXingreso *crearNodoPracXingreso(pracXingreso dato);
+nodoPracXingreso *agregarPpio(nodoPracXingreso *lista, nodoPracXingreso *nuevoNodo);
+nodoPracXingreso *buscarUltimo(nodoPracXingreso *lista);
+nodoPracXingreso *buscarNodo(nodoPracXingreso *lista, int nroDePractica);
+nodoPracXingreso *agregarFinal(nodoPracXingreso *lista, nodoPracXingreso *nuevoNodo);
+nodoPracXingreso *borrarNodo(nodoPracXingreso *lista, int nroDePractica);
+void mostrarUnNodoPracXingreso(nodoPracXingreso * lista);
+void mostrarListaPracXIngreso(nodoPracXingreso * lista);
+nodoIngresos * cargarListaDeingresos(nodoIngresos * lista);
+nodoIngresos * cargarListaDePracXingreso(nodoIngresos * lista);
 
 #endif // LISTAS_H_INCLUDED

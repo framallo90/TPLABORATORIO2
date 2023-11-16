@@ -39,6 +39,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="FuncArchivos.h" />
+		<Unit filename="LISTAS.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="LISTAS.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

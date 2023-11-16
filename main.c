@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "ARBOLES.h"
+#include "LISTAS.h"
 #include "FuncArchivos.h"
 
 #define TECLA_ENTER 13
@@ -46,7 +47,7 @@ int main() {
             case 2:
                 perfil = login();
                 if(perfil == 2){
-                     printf("\n\tACA VA EL MENU DE ADMINISTRATIVO");
+                     menuAdministrativo();
                 }else{
                     printf("\n\tESTE PERFIL NO ES ADMINISTRATIVO.\n");
                 }
@@ -334,7 +335,7 @@ void menuAdministrativo(){
         system("cls");
 
         printf("\n\nMENU ADMINISTRATIVO\n");
-        printf("1. .\n");
+        printf("1. ALTA INGRESO.\n");
         printf("2. .\n");
         printf("3. .\n");
         printf("0. SALIR\n");
@@ -344,7 +345,8 @@ void menuAdministrativo(){
 
         switch (opcion) {
             case 1:
-
+                printf("\nALTA DE ORDEN");
+                altaOrden();
                 system("pause>nul"); // Pausa
                 break;
 

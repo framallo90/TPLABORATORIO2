@@ -1,18 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
+#include "ARBOLES.h"
 #include "LISTAS.h"
+#include "FuncArchivos.h"
 
 
-nodo *inicLista() {
-   return NULL;
-}
-
-nodo *crearNodo(persona dato) {
-    nodo *aux = (nodo*) malloc(sizeof(nodo));
+///NODO INGRESOS
+nodoIngresos *crearNodoIngresos(ingresos dato){
+    nodoIngresos *aux = (nodoIngresos*) malloc(sizeof(nodoIngresos));
     aux->dato = dato;
     aux->siguiente = NULL;
+    aux->listaPracticasXingreso = NULL;
+
     return aux;
 }
 
-nodo *agregarPpio(nodo *lista, nodo *nuevoNodo) {
+nodoIngresos *agregarPpioIngresos(nodoIngresos *lista, nodoIngresos *nuevoNodo) {
     if (lista == NULL) {
         lista = nuevoNodo;
     } else {
@@ -22,8 +27,8 @@ nodo *agregarPpio(nodo *lista, nodo *nuevoNodo) {
     return lista;
 }
 
-nodo *buscarUltimo(nodo *lista) {
-    nodo *seg = lista;
+nodoIngresos *buscarUltimoIngresos(nodoIngresos *lista) {
+    nodoIngresos *seg = lista;
     if (seg != NULL) {
         while (seg->siguiente != NULL) {
             seg = seg->siguiente;
@@ -32,55 +37,35 @@ nodo *buscarUltimo(nodo *lista) {
     return seg;
 }
 
-nodo *buscarNodo(nodo *lista, char nombre[20]) {
-    nodo *seg = lista;
-    while (seg != NULL && strcmp(nombre, seg->dato.nombre) != 0) {
+nodoIngresos *buscarNodoIngresos(nodoIngresos *lista, int nroIngreso) {
+    nodoIngresos *seg = lista;
+    while (seg != NULL && seg->dato.NroDeIngreso != nroIngreso ){
         seg = seg->siguiente;
     }
     return seg;
 }
 
-nodo *agregarFinal(nodo *lista, nodo *nuevoNodo) {
+nodoIngresos *agregarFinalIngresos(nodoIngresos *lista, nodoIngresos *nuevoNodo) {
     if (lista == NULL) {
         lista = nuevoNodo;
     } else {
-        nodo *ultimo = buscarUltimo(lista);
+        nodoIngresos *ultimo = buscarUltimoIngresos(lista);
         ultimo->siguiente = nuevoNodo;
     }
     return lista;
 }
 
-nodo *agregarEnOrden(nodo *lista, nodo *nuevoNodo){
-    if(lista == NULL){
-        lista = nuevoNodo;
-    }else{
-        if(strcmp(nuevoNodo->dato.nombre,lista->dato.nombre)<0){
-            lista = agregarPpio(lista, nuevoNodo);
-        }else{
-            nodo *ante = lista;
-            nodo *seg = lista->siguiente;
-            while((seg != NULL)&&(strcmp(nuevoNodo->dato.nombre,seg->dato.nombre)>0)){
-                ante = seg;
-                seg = seg->siguiente;
-            }
-            nuevoNodo->siguiente = seg;
-            ante->siguiente = nuevoNodo;
-        }
-    }
-    return lista;
-}
+nodoIngresos *borrarNodoIngresos(nodoIngresos *lista, int nroIngreso) {
+    nodoIngresos *seg;
+    nodoIngresos *ante = NULL;
 
-nodo *borrarNodo(nodo *lista, char nombre[20]) {
-    nodo *seg;
-    nodo *ante = NULL;
-
-    if (lista != NULL && strcmp(nombre, lista->dato.nombre) == 0) {
-        nodo *aux = lista;
+    if (lista != NULL && nroIngreso == lista->dato.NroDeIngreso) {
+        nodoIngresos *aux = lista;
         lista = lista->siguiente;
         free(aux);
     } else {
         seg = lista;
-        while (seg != NULL && strcmp(nombre, seg->dato.nombre) != 0) {
+        while (seg != NULL && nroIngreso != seg->dato.NroDeIngreso) {
             ante = seg;
             seg = seg->siguiente;
         }
@@ -92,111 +77,178 @@ nodo *borrarNodo(nodo *lista, char nombre[20]) {
     return lista;
 }
 
-nodo *borrarTodaLaLista(nodo * lista){
-    nodo *proximo;
-    nodo *seg;
-    seg = lista;
-    while(seg != NULL)
-    {
-        proximo = seg->siguiente;
-        free(seg);
-        seg = proximo;
-    }
-    return seg;
-}
-
-void mostrarUnNodo(nodo *aux){
-    if (aux != NULL){
-        printf("\nNombre: %s", aux->dato.nombre);
-        printf("\nEdad: %d", aux->dato.edad);
+void mostrarUnNodoDeIngresos(nodoIngresos * lista){
+    printf("\n---------------------------------------");
+    printf("\nDNI: %i",lista->dato.DniPaciente);
+    printf("\nNUMERO DE INGRESO: %i",lista->dato.NroDeIngreso);
+    printf("\nFECHA DE INGRESO: %s",lista->dato.FechaDeIngreso);
+    printf("\nFECHA DE RETIRO: %s",lista->dato.FechaDeRetiro);
+    printf("\nMATRICULA DEL PROFESIONAL: %i",lista->dato.MatriculaDelProfesionalSolicitante);
+    if(lista->dato.Eliminado = 0){
+        printf("\nEL INGRESO ESTA ACTIVO.");
     }else{
-        printf("\nNodo no válido.");
+        printf("\nEL INGRESO ESTA DADO DE BAJA.");
     }
 }
 
-void mostrarLista(nodo *lista){
-    nodo * aux=lista;
-    while(aux != NULL){
-        mostrarUnNodo(aux);
+void mostrarListaDeIngreso(nodoIngresos * lista){
+    nodoIngresos * aux = lista;
+    while(aux!=NULL){
+        mostrarUnNodoDeIngresos(aux);
         aux = aux->siguiente;
     }
 }
 
-persona creoPersona(){
-    persona personaNueva;
-    puts("\n-----------------------------");
-    printf("\n Ingrese nombre: ");
-    fflush(stdin);
-    scanf("%s",&personaNueva.nombre);
-    printf("\n Ingrese edad: ");
-    scanf("%i",&personaNueva.edad);
-    puts("\n-----------------------------");
-    return personaNueva;
+
+///NODO PRAC X INGRESOS
+
+nodoPracXingreso *crearNodoPracXingreso(pracXingreso dato) {
+    nodoPracXingreso *aux = (nodoPracXingreso*) malloc(sizeof(nodoPracXingreso));
+    aux->dato = dato;
+    aux->siguiente = NULL;
+    return aux;
 }
 
-///CON ARCHIVOS
-void cargarPersona(char archivo[]){
-    persona personaNueva;
-    char letra = 's';
-    FILE *archi = fopen(archivo, "w");
-    if(archi!=NULL){
-       printf("\nDesea ingresar una persona?: (s/n) ");
-       fflush(stdin);
-       scanf("%c", &letra);
-       while (letra == 's' || letra == 'S'){
-
-                puts("\n-----------------------------");
-                printf("\n Ingrese nombre: ");
-                fflush(stdin);
-                scanf("%s",&personaNueva.nombre);
-                printf("\n Ingrese edad: ");
-                scanf("%i",&personaNueva.edad);
-                puts("\n-----------------------------");
-
-                fwrite(&personaNueva, sizeof(personaNueva),1 , archi);
-
-                printf("\n Desea ingresar otra persona? s/n: ");
-                fflush(stdin);
-                scanf("%c",&letra);
-        }
-        fclose(archi);
-        BORRAR_PANTALLA;
-    }
-}
-
-nodo *pasoAlista(char archivo[],nodo *lista){
-    FILE *archi=fopen(archivo,"r");
-    persona personaNueva;
-    rewind(archi);
-    if(archi != NULL){
-        while(fread(&personaNueva, sizeof(personaNueva), 1, archi)>0){
-                lista = agregarEnOrden(lista,crearNodo(personaNueva));
-        }
-        fclose(archi);
+nodoPracXingreso *agregarPpio(nodoPracXingreso *lista, nodoPracXingreso *nuevoNodo) {
+    if (lista == NULL) {
+        lista = nuevoNodo;
+    } else {
+        nuevoNodo->siguiente = lista;
+        lista = nuevoNodo;
     }
     return lista;
 }
 
-void pasoAlistaREF(char archivo[],nodo **lista){
-    FILE *archi=fopen(archivo,"r");
-    persona personaNueva;
-    rewind(archi);
-    if(archi != NULL){
-        while(fread(&personaNueva, sizeof(personaNueva), 1, archi)>0){
-                *lista = agregarEnOrden(*lista,crearNodo(personaNueva));
+nodoPracXingreso *buscarUltimo(nodoPracXingreso *lista) {
+    nodoPracXingreso *seg = lista;
+    if (seg != NULL) {
+        while (seg->siguiente != NULL) {
+            seg = seg->siguiente;
         }
-        fclose(archi);
     }
+    return seg;
 }
 
-///borro nodo con recursividad
-nodo *borroRecursivo(nodo *lista){
-    nodo *prox;
-    if(lista !=NULL){
-        prox = lista->siguiente;
-        free(lista);
-        lista = borroRecursivo(prox);
+nodoPracXingreso *buscarNodo(nodoPracXingreso *lista, int nroDePractica) {
+    nodoPracXingreso *seg = lista;
+    while (seg != NULL && seg->dato.NroDePractica != nroDePractica) {
+        seg = seg->siguiente;
+    }
+    return seg;
+}
+
+nodoPracXingreso *agregarFinal(nodoPracXingreso *lista, nodoPracXingreso *nuevoNodo) {
+    if (lista == NULL) {
+        lista = nuevoNodo;
+    } else {
+        nodoPracXingreso *ultimo = buscarUltimo(lista);
+        ultimo->siguiente = nuevoNodo;
     }
     return lista;
 }
 
+nodoPracXingreso *borrarNodo(nodoPracXingreso *lista, int nroDePractica) {
+    nodoPracXingreso *seg;
+    nodoPracXingreso *ante = NULL;
+
+    if (lista != NULL && nroDePractica ==  lista->dato.NroDePractica) {
+        nodoPracXingreso *aux = lista;
+        lista = lista->siguiente;
+        free(aux);
+    } else {
+        seg = lista;
+        while (seg != NULL && nroDePractica != seg->dato.NroDePractica) {
+            ante = seg;
+            seg = seg->siguiente;
+        }
+        if (seg != NULL) {
+            ante->siguiente = seg->siguiente;
+            free(seg);
+        }
+    }
+    return lista;
+}
+
+void mostrarUnNodoPracXingreso(nodoPracXingreso * lista){
+    printf("\n----------------------------------");
+    printf("\nNUMERO DE INGRESO: %i",lista->dato.NroDeIngreso);
+    printf("\nNUMERO DE PRACTICA: %i",lista->dato.NroDePractica);
+    printf("\nRESULTADO: %s",lista->dato.Resultado);
+}
+
+void mostrarListaPracXIngreso(nodoPracXingreso * lista){
+    nodoPracXingreso * aux = lista;
+    while(aux!=NULL){
+        mostrarUnNodoPracXingreso(aux);
+        aux = aux->siguiente;
+    }
+}
+
+nodoIngresos * cargarListaDeingresos(nodoIngresos * lista){
+    FILE * archivo = fopen("ingresos.bin", "rb");
+    ingresos aux;
+    if(archivo!=NULL){
+        while(fread(&aux,sizeof(ingresos),1,archivo)>0){
+            lista = agregarFinal(lista,crearNodoIngresos(aux));
+        }
+        fclose(archivo);
+    }
+    return lista;
+}
+
+nodoIngresos * cargarListaDePracXingreso(nodoIngresos * lista){
+    FILE * archivo = fopen("pracXingreso.bin", "rb");
+    pracXingreso aux;
+    if(archivo!=NULL){
+        while(fread(&aux,sizeof(pracXingreso),1,archivo)>0){
+            if(aux.NroDeIngreso==lista->dato.NroDeIngreso){
+                lista->listaPracticasXingreso = agregarFinal(lista->listaPracticasXingreso,crearNodoPracXingreso(aux));
+            }else{
+                lista = lista->siguiente;
+            }
+        }
+        fclose(archivo);
+    }
+    return lista;
+}
+
+//nodoIngresos * buscarNumeroDeingreso(nodoIngresos * lista){
+//    nodoPaciente * arbol = buscarParaPracticas(arbol);
+//    nodoIngresos * aux = arbol->listaIngresos;
+//    if(arbol!=NULL){
+//    int num;
+//    printf("\nIngrese el numero de ingreso a buscar: ");
+//    fflush(stdin);
+//    scanf("%i",&num);
+//    while((aux!=NULL)&&(aux->dato.NroDeIngreso!=num)){
+//        aux = aux->siguiente;
+//    }
+//    if(aux->dato.NroDeIngreso==num){
+//        printf("\nSe encontro el numero de ingreso: ");
+//        mostrarUnNodoDeIngresos(aux);
+//        return aux;
+//    }
+//    printf("\nno se encontro el numero de ingreso");
+//    }
+//}
+//
+//void  buscarNumeroDePractica(){
+//    nodoIngresos * aux = buscarNumeroDeingreso(aux);
+//    if(aux!=NULL){
+//        int num;
+//        printf("\nIngrese el numero de practica a buscar: ");
+//        fflush(stdin);
+//        scanf("%i",&num);
+//        nodoPracXingreso * lista = aux->listaPracticasXingreso;
+//        while((lista!=NULL)&&(lista->dato.NroDePractica!=num)){
+//            lista=lista->siguiente;
+//        }
+//        if(lista->dato.NroDePractica==num){
+//            printf("Se encontro el num de practica: \n");
+//            mostrarUnNodoPracXingreso(lista);
+//        }else{
+//            printf("\nNo se encontro la practica");
+//    }
+//}
+//}
+//

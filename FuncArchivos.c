@@ -3,8 +3,23 @@
 #include <string.h>
 #include <stdbool.h>
 #include "ARBOLES.h"
+#include "LISTAS.h"
 #include "FuncArchivos.h"
 
+
+
+void altaOrden(){///AL DAR DE ALTA UN INGRESO EXIGE AL MENOS UNA PRACTICA X INGRESO POR ESO ES NECESARIA LA FUNCION ALTA ORDEN.
+    char c = 's';
+    printf("\nALTA DE INGRESO: ");
+    altaIngreso();
+    printf("\nALTA DE PRACTICA POR INGRESO: ");
+    while(c == 's'){
+        altaPracticasXingreso();
+        printf("\nINGRESAR OTRA PRACTICA? s/n ");
+        fflush(stdin);
+        scanf(" %c",&c);
+    }
+}
 
 /// FUNCIONES PARA ARCHIVO EMPLEADOS
 empleados_laboratorio ingresoEmpleado() { /// INGRESO EMPLEADO POR CONSOLA
@@ -456,7 +471,7 @@ void modificarPacientePorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BI
     }
 }
 
-void bajaPaciente(){///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
+void bajaPaciente(){///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN VERIFICA CON verIngresosAsoc Y DA DE BAJA
     int dni;
     printf("\nINGRESE EL DNI DEL PACIENTE A MODIFICAR: ");
     scanf("%d", &dni);
@@ -497,7 +512,7 @@ void bajaPaciente(){///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA
     }
 }
 
-int verIngresosAsoc(int dni){
+int verIngresosAsoc(int dni){///VERIFICA INGRESOS ASOCIADOS CON UN FLAG DEVUELVE 0 SI NO TIENE Y 1 SI TIENE INGRESOS ASOCIADOS
     int flag= 0;
     ingresos nuevo;
     FILE* archi = fopen("ingresos.bin","rb");
@@ -618,7 +633,49 @@ void modificarPracticaPorNumero() {///PIDE NUMERO DE PRACT. SI LO ENCUENTRA DEJA
         printf("\n PRACTICA CON Nro %d, NO ENCONTRADA.", numero);
     }
 }
-//FALTA DAR DE BAJA
+
+void darPracticaDeBaja(){///VERIFICAR SI ESTA ASOCIADA A INGRESO, SI EL INGRESO ESTA ACTIVO NO PUEDE DARSE DE BAJA
+    int nroDePractica;
+    practicas aDarDeBaja;
+    printf("\nINGRESE NUMERO DE PRACTICA A DAR DE BAJA");
+    scanf(" %d",nroDePractica);
+    if(practicaExiste(nroDePractica)!=true){
+        printf("\nLA PRACTICA NO EXISTE EN EL ARCHIVO.");
+    }
+    int vinculada = verVincDePractica(nroDePractica);
+
+    if(vinculada == 0){
+        FILE*archi=fopen("practicas.bin","rb+");
+        if(archi != NULL){
+            while(fread(&aDarDeBaja,sizeof(practicas),1,archi)>0){
+                if(nroDePractica == aDarDeBaja.NroDePractica){
+                    aDarDeBaja.Eliminado = 1;
+                }
+            }
+        }
+        fclose(archi);
+        printf("\nLA PRACTICA SE HA DADO DE BAJA CORRECTAMENTE");
+    }else{
+        printf("\n LA PRACTICA ESTA ASOCIADA AL INGRESO NUMERO: %d.",vinculada);
+    }
+
+}
+
+int verVincDePractica(int nroDePractica){
+    int nroIngreso = 0;
+    pracXingreso nuevo;
+    FILE* archi = fopen("pracXingresos.bin","rb");
+    if(archi!=NULL){
+        while(fread(&nuevo,sizeof(ingresos),1,archi)>0){
+            if(nroDePractica == nuevo.NroDePractica){
+                nroIngreso = nuevo.NroDeIngreso;
+            }
+        }
+    }
+    fclose(archi);
+
+    return nroIngreso;
+}
 
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS X INGRESO
@@ -634,7 +691,7 @@ pracXingreso nuevaPracticaXingreso(){
     return nueva;
 }
 
-bool practicaExiste(int nroPractica) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA EXISTE O NO EN EL ARCHIVO PRACTICAS.BIN, SE USA EN ALTA PRACTICA
+bool practicaExiste(int nroPractica) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA EXISTE O NO EN EL ARCHIVO PRACTICAS.BIN, SE USA EN ALTA PRACTICAXINGRESO
     FILE *archi = fopen("practicas.bin", "rb");
     if (archi == NULL) {
         return false; // Si no se puede abrir el archivo, asumimos que la practica no existe
@@ -652,7 +709,7 @@ bool practicaExiste(int nroPractica) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA E
     return false; // La practica no existe en el archivo
 }
 
-bool ingresoExiste(int nroIngreso) {/// TRUE OR FALSE, SI EL NRO DE PRACTICA EXISTE O NO EN EL ARCHIVO PRACTICAS.BIN, SE USA EN ALTA PRACTICA
+bool ingresoExiste(int nroIngreso) {/// TRUE OR FALSE, SI EL NRO DE INGRESO EXISTE O NO EN EL ARCHIVO INGRESOS.BIN, SE USA EN ALTA PRACTICAXINGRESO
     FILE *archi = fopen("ingresos.bin", "rb");
     if (archi == NULL) {
         return false; // Si no se puede abrir el archivo, asumimos que el ingreso no existe
@@ -902,5 +959,28 @@ void mostrarIngresos() {
     }
     fclose(archi);
 }
-//FALTA BAJA DE INGRESO, DEBE DAR DE BAJA LAS PRACTICAS ASOCIADAS AL INGRESO
 
+void bajaDeIngreso(){
+    int nroIngreso;
+    ingresos nuevo;
+    int flag=0;
+    FILE*archi = fopen("ingresos.bin","rb+");
+    printf("\nINGRESE EL NUMERO DEL INGRESO A MODIFICAR: ");
+    scanf("%d", &nroIngreso);
+
+     if(archi != NULL){
+        while(fread(&nuevo,sizeof(ingresos),1,archi)>0){
+            if(nroIngreso == nuevo.NroDeIngreso){
+                nuevo.Eliminado = 1;
+                flag = 1;
+            }
+        }
+    }
+    fclose(archi);
+    if(flag == 0){
+        printf("\nEL NUMERO DE INGRESO NO SE ENCUENTRA EN EL ARCHIVO");
+    }else{
+        printf("\nEL INGRESO FUE DADO DE BAJA.");
+    }
+
+}

@@ -11,35 +11,65 @@
 	<string.h>
 	<stdbool.h>
 
-1699984741 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\main.c
+1700166582 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\main.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	"ARBOLES.h"
+	"LISTAS.h"
 	"FuncArchivos.h"
 
-1699557449 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.h
+1700162562 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<stdbool.h>
+	"ARBOLES.h"
+	"LISTAS.h"
 	"FuncArchivos.h"
 
-1698622378 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.c
-	"ARBOLES.h"
-
-1700073187 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.h
+1700162561 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\arboles.c
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	"ARBOLES.h"
+	"LISTAS.h"
+	"FuncArchivos.h"
 
-1700073295 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.c
+1700166473 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
 	<stdbool.h>
 	"ARBOLES.h"
+	"LISTAS.h"
+
+1700166582 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\funcarchivos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"ARBOLES.h"
+	"LISTAS.h"
+	"FuncArchivos.h"
+
+1700165656 c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\listas.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"ARBOLES.h"
+	"LISTAS.h"
+	"FuncArchivos.h"
+
+1700165173 source:c:\users\sergio\desktop\proyectos codeblocks\laboratorio 2\tplaboratorio2\listas.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<stdbool.h>
+	"ARBOLES.h"
+	"LISTAS.h"
 	"FuncArchivos.h"
 

@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "ARBOLES.h"
+#include "LISTAS.h"
 
 typedef struct paciente{///DATO PARA EL ARBOL DE PACIENTES
     char NyA[40];
@@ -62,6 +63,8 @@ typedef struct nodoPracXingreso {///SEGUNDA LISTA DE PRACTICAS POR INGRESO QUE S
     struct pracXingreso *siguiente;
 } nodoPracXingreso;
 
+void altaOrden();
+
 /// FUNCIONES PARA ARCHIVO EMPLEADOS
 empleados_laboratorio ingresoEmpleado();
 bool empleadoExiste(int dni);
@@ -85,6 +88,8 @@ practicas ingresoPracticas();
 void altaDePracticas();
 void mostrarPracticas();
 void modificarPracticaPorNumero();
+void darPracticaDeBaja();
+int verVincDePractica(int nroDePractica);
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS X INGRESO
 pracXingreso nuevaPracticaXingreso();
@@ -99,5 +104,6 @@ ingresos nuevoIngreso();
 void altaIngreso();
 void modificarIngresoPorNro();
 void mostrarIngresos();
+void bajaDeIngreso();
 
 #endif // FUNCARCHIVOS_H_INCLUDED
