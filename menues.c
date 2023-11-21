@@ -440,7 +440,7 @@ void menuAdministrador(){
 void menuAdministrativo(){
     int opcion;
     int repetir = 1;
-    nodoPaciente* arbol=cargarArbolConListas(arbol);
+    nodoPaciente* arbol= cargarPacientesDesdeArchivo();
 
     do {
         system("cls");
@@ -490,6 +490,7 @@ void menuAdministrativo(){
                 break;
 
             case 7:
+                arbol = cargarListaDeIngresosDesdeArbol(arbol);
                 mostrarListaDeIngreso(arbol);
                 system("pause>nul");
                 break;

@@ -11,6 +11,7 @@
 #include "menues.h"
 
 
+
 ///General
 nodoPaciente* cargarArbolConListas();
 void mostrarListasDeTodosLosPacientes(nodoPaciente* arbol);

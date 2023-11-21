@@ -91,17 +91,17 @@ void mostrarUnNodoDeIngresos(nodoIngresos * lista){
     }
 }
 
-void mostrarListaDeIngreso(nodoPaciente *arbol) {
-    if (arbol->izq != NULL) {
-        mostrarListaDeIngreso(arbol->izq);
-    }
-    nodoIngresos *aux = arbol->listaIngresos;
+void mostrarListaDeIngreso(nodoPaciente* arbol) {
+    nodoIngresos* aux = arbol->listaIngresos;
     while (aux != NULL) {
         mostrarUnNodoDeIngresos(aux);
         aux = aux->siguiente;
     }
-    if (arbol->der != NULL) {
+    if (arbol->der != NULL){
         mostrarListaDeIngreso(arbol->der);
+    }
+    if(arbol->izq !=NULL){
+        mostrarListaDeIngreso(arbol->izq);
     }
 }
 
@@ -247,7 +247,7 @@ nodoPaciente* cargarListaDeIngresosDesdeArbol(nodoPaciente* arbol){
     }
     return arbol;
 }
-
+///////////////////////////////////////////////
 nodoPaciente* cargarArbolConListas() {
     nodoPaciente* arbolPacientes = cargarPacientesDesdeArchivo();
     if (arbolPacientes == NULL) {
@@ -308,3 +308,5 @@ void mostrarListaDeIngresosDePaciente(nodoPaciente* arbol) {
         printf("\nPaciente con DNI %d no encontrado.\n", dniBuscado);
     }
 }
+///////////////////////////////////////////////////
+
