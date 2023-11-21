@@ -223,46 +223,6 @@ nodoIngresos *cargarListaDePracXingreso(nodoIngresos *lista) {
     return lista;
 }
 
-//nodoIngresos * buscarNumeroDeingreso(nodoIngresos * lista){
-//    nodoPaciente * arbol = buscarParaPracticas(arbol);
-//    nodoIngresos * aux = arbol->listaIngresos;
-//    if(arbol!=NULL){
-//    int num;
-//    printf("\nIngrese el numero de ingreso a buscar: ");
-//    fflush(stdin);
-//    scanf("%i",&num);
-//    while((aux!=NULL)&&(aux->dato.NroDeIngreso!=num)){
-//        aux = aux->siguiente;
-//    }
-//    if(aux->dato.NroDeIngreso==num){
-//        printf("\nSe encontro el numero de ingreso: ");
-//        mostrarUnNodoDeIngresos(aux);
-//        return aux;
-//    }
-//    printf("\nno se encontro el numero de ingreso");
-//    }
-//}
-//
-//void  buscarNumeroDePractica(){
-//    nodoIngresos * aux = buscarNumeroDeingreso(aux);
-//    if(aux!=NULL){
-//        int num;
-//        printf("\nIngrese el numero de practica a buscar: ");
-//        fflush(stdin);
-//        scanf("%i",&num);
-//        nodoPracXingreso * lista = aux->listaPracticasXingreso;
-//        while((lista!=NULL)&&(lista->dato.NroDePractica!=num)){
-//            lista=lista->siguiente;
-//        }
-//        if(lista->dato.NroDePractica==num){
-//            printf("Se encontro el num de practica: \n");
-//            mostrarUnNodoPracXingreso(lista);
-//        }else{
-//            printf("\nNo se encontro la practica");
-//    }
-//}
-//}
-//
 
 nodoPaciente* cargarListaDeIngresosDesdeArbol(nodoPaciente* arbol){
     FILE *archivo = fopen("ingresos.bin","rb");
