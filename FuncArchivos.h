@@ -6,6 +6,8 @@
 #include <stdbool.h>
 #include "ARBOLES.h"
 #include "LISTAS.h"
+#include "FuncArchivos.h"
+#include "menues.h"
 
 typedef struct paciente{///DATO PARA EL ARBOL DE PACIENTES
     char NyA[40];

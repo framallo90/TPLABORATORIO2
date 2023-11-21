@@ -8,7 +8,7 @@
 #include "ARBOLES.h"
 #include "LISTAS.h"
 #include "FuncArchivos.h"
-#define BORRAR_PANTALLA system("cls");
+#include "menues.h"
 
 
 ///General

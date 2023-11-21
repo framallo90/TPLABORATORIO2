@@ -5,6 +5,7 @@
 #include "ARBOLES.h"
 #include "LISTAS.h"
 #include "FuncArchivos.h"
+#include "menues.h"
 
 
 
@@ -839,22 +840,6 @@ void mostrarPracticasXingreso() {
 
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
-//ingresos nuevoIngreso(){
-//    ingresos nuevo;
-//    printf("\nNRO DE INGRESO: ");
-//    scanf(" %d",&nuevo.NroDeIngreso);
-//    printf("\nFECHA DE INGRESO d/m/aaaa : ");
-//    scanf(" %s",&nuevo.FechaDeIngreso);
-//    printf("\nFECHA DE RETIRO d/m/aaaa : ");
-//    scanf(" %s",&nuevo.FechaDeRetiro);
-//    printf("\nDNI PACIENTE: ");
-//    scanf(" %d",&nuevo.DniPaciente);
-//    printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
-//    scanf(" %d",&nuevo.MatriculaDelProfesionalSolicitante);
-//    nuevo.Eliminado = 0;
-//
-//    return nuevo;
-//}
 
 ingresos nuevoIngreso() {
     ingresos nuevo;
@@ -871,7 +856,6 @@ ingresos nuevoIngreso() {
     printf("\nFECHA DE RETIRO (d/m/aaaa): ");
     fflush(stdin);
     scanf("%d/%d/%d", &nuevo.FechaDeRetiro->dia, &nuevo.FechaDeRetiro->mes, &nuevo.FechaDeRetiro->anio);
-
     printf("\nDNI PACIENTE: ");
     fflush(stdin);
     scanf("%d", &nuevo.DniPaciente);
@@ -977,7 +961,7 @@ void mostrarIngresos() {
         ingresos nuevo;
         int contador = 0;
 
-        printf("\nPRACTICAS X INGRESOS REGISTRADAS:\n");
+        printf("\nINGRESOS REGISTRADOS:\n");
 
         while (fread(&nuevo, sizeof(ingresos), 1, archi) == 1) {
 

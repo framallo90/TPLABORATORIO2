@@ -5,6 +5,7 @@
 #include "ARBOLES.h"
 #include "LISTAS.h"
 #include "FuncArchivos.h"
+#include "menues.h"
 
 ///NODO INGRESOS
 nodoIngresos *crearNodoIngresos(ingresos dato){
