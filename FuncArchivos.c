@@ -10,8 +10,15 @@
 
 void altaOrden(){///AL DAR DE ALTA UN INGRESO EXIGE AL MENOS UNA PRACTICA X INGRESO POR ESO ES NECESARIA LA FUNCION ALTA ORDEN.
     char c = 's';
+    int dni;
+
     printf("\nALTA DE INGRESO: ");
+    printf("\nDNI DEL PACIENTE: ");
+    scanf("%d", &dni);
+
+       if (pacienteExiste(dni)){
     altaIngreso();
+
     printf("\nALTA DE PRACTICA POR INGRESO: ");
     while(c == 's'){
         altaPracticasXingreso();
@@ -19,6 +26,11 @@ void altaOrden(){///AL DAR DE ALTA UN INGRESO EXIGE AL MENOS UNA PRACTICA X INGR
         fflush(stdin);
         scanf(" %c",&c);
     }
+        } else {
+        printf("\nEL PACIENTE CON DNI %d NO SE ENCUENTRA EN EL ARCHIVO.", dni);
+        return;
+    }
+
 }
 
 /// FUNCIONES PARA ARCHIVO EMPLEADOS
@@ -827,20 +839,47 @@ void mostrarPracticasXingreso() {
 
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
-ingresos nuevoIngreso(){
+//ingresos nuevoIngreso(){
+//    ingresos nuevo;
+//    printf("\nNRO DE INGRESO: ");
+//    scanf(" %d",&nuevo.NroDeIngreso);
+//    printf("\nFECHA DE INGRESO d/m/aaaa : ");
+//    scanf(" %s",&nuevo.FechaDeIngreso);
+//    printf("\nFECHA DE RETIRO d/m/aaaa : ");
+//    scanf(" %s",&nuevo.FechaDeRetiro);
+//    printf("\nDNI PACIENTE: ");
+//    scanf(" %d",&nuevo.DniPaciente);
+//    printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
+//    scanf(" %d",&nuevo.MatriculaDelProfesionalSolicitante);
+//    nuevo.Eliminado = 0;
+//
+//    return nuevo;
+//}
+
+ingresos nuevoIngreso() {
     ingresos nuevo;
+
     printf("\nNRO DE INGRESO: ");
-    scanf(" %d",&nuevo.NroDeIngreso);
-    printf("\nFECHA DE INGRESO d/m/aaaa : ");
+    scanf("%d", &nuevo.NroDeIngreso);
+
+    // Cargar la fecha de ingreso
+    printf("\nFECHA DE INGRESO (d/m/aaaa): ");
     fflush(stdin);
-    scanf(" %s",&nuevo.FechaDeIngreso);
-    printf("\nFECHA DE RETIRO d/m/aaaa : ");
+    scanf("%d/%d/%d", &nuevo.FechaDeIngreso->dia, &nuevo.FechaDeIngreso->mes, &nuevo.FechaDeIngreso->anio);
+
+    // Cargar la fecha de retiro
+    printf("\nFECHA DE RETIRO (d/m/aaaa): ");
     fflush(stdin);
-    scanf(" %s",&nuevo.FechaDeRetiro);
+    scanf("%d/%d/%d", &nuevo.FechaDeRetiro->dia, &nuevo.FechaDeRetiro->mes, &nuevo.FechaDeRetiro->anio);
+
     printf("\nDNI PACIENTE: ");
-    scanf(" %d",&nuevo.DniPaciente);
+    fflush(stdin);
+    scanf("%d", &nuevo.DniPaciente);
+
     printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
-    scanf(" %d",&nuevo.MatriculaDelProfesionalSolicitante);
+    fflush(stdin);
+    scanf("%d", &nuevo.MatriculaDelProfesionalSolicitante);
+
     nuevo.Eliminado = 0;
 
     return nuevo;
@@ -850,18 +889,12 @@ void altaIngreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILI
     ingresos nuevo;
     int dni;
 
-    printf("\nDNI DEL PACIENTE: ");
-    scanf("%d", &dni);
-
-    if (pacienteExiste(dni)!=true) {//quiere decir si paciente dni no es "TRUE"...
-        printf("\nEL PACIENTE CON DNI %d NO SE ENCUENTRA EN EL ARCHIVO.", dni);
-        return;
-    }
-
-
-    nuevo = nuevoIngreso();
-
     FILE *archi = fopen("ingresos.bin", "ab");
+
+
+        nuevo = nuevoIngreso();
+
+
     if (archi == NULL) {
         printf("\nERROR AL ABRIR EL ARCHIVO.");
         return;
@@ -873,7 +906,10 @@ void altaIngreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILI
         printf("\nPACIENTE AGREGADO CON EXITO.");
     }
 
-    fclose(archi);
+
+fclose(archi);
+
+
 }
 
 void modificarIngresoPorNro() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
@@ -947,8 +983,8 @@ void mostrarIngresos() {
 
             printf("\n=====================================================");
             printf("\nNUMERO DE INGRESO: %d",nuevo.NroDeIngreso);
-            printf("\nFECHA DE INGRESO: %s", nuevo.FechaDeIngreso);
-            printf("\nFECHA DE RETIRO: %s", nuevo.FechaDeRetiro);
+            printf("\nFECHA DE INGRESO: %d/%d/%d", nuevo.FechaDeIngreso->dia, nuevo.FechaDeIngreso->mes, nuevo.FechaDeIngreso->anio);
+            printf("\nFECHA DE RETIRO: %d/%d/%d", nuevo.FechaDeRetiro->dia, nuevo.FechaDeRetiro->mes, nuevo.FechaDeRetiro->anio);
             printf("\nDNI DEL PACIENTE: %d",nuevo.DniPaciente);
             printf("\nMATRICULA DEL PROFESIONAL: %d",nuevo.MatriculaDelProfesionalSolicitante);
             if(nuevo.Eliminado == 0 ){

@@ -18,7 +18,7 @@ typedef struct paciente{///DATO PARA EL ARBOL DE PACIENTES
 
 typedef struct nodoPaciente {/// NODO PARA EL ARBOL DE PACIENTES
     paciente dato;
-    struct ingresos *listaIngresos; // Puntero a la lista de ingresos asociados a este paciente
+    struct nodoIngresos *listaIngresos; // Puntero a la lista de ingresos asociados a este paciente
     struct paciente *izq; // Puntero al hijo izquierdo en el árbol (menor DNI)
     struct paciente *der; // Puntero al hijo derecho en el árbol (mayor DNI)
 }nodoPaciente;
@@ -31,10 +31,16 @@ typedef struct empleados_laboratorio {///USUARIOS QUE VAN A LOGUEAR
     char perfil[20];
 } empleados_laboratorio;
 
+typedef struct fecha { //ESTRUCTURA DE FECHA
+    int dia;
+    int mes;
+    int anio;
+} fecha;
+
 typedef struct ingresos{///DATO PARA LISTA DE INGRESOS
-     int NroDeIngreso;
-    char FechaDeIngreso[10];
-    char FechaDeRetiro[10];
+    int NroDeIngreso;
+    fecha FechaDeIngreso[10];
+    fecha FechaDeRetiro[10];
     int DniPaciente;
     int MatriculaDelProfesionalSolicitante;
     int Eliminado;

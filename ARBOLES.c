@@ -16,6 +16,8 @@ nodoPaciente* crearNodo(paciente dato){///CREA EL NODO DEL ARBOL CON LOS DATOS D
     nuevo->listaIngresos = NULL;
     nuevo->izq = NULL;
     nuevo->der = NULL;
+
+    return nuevo;
 }
 
 void inorder(nodoPaciente* arbol){///MUESTRA EL ARBOL EN ORDEN
@@ -66,22 +68,16 @@ void postorder(nodoPaciente* arbol){
     }
 }
 
-nodoPaciente* buscar(nodoPaciente* arbol, int dni){///BUSCA PACIENTE POR DNI EN EL ARBOL
-    nodoPaciente * rta=NULL;
-    if(arbol!=NULL){
-        if(dni == arbol->dato.DNI){
-            printf("\nEL DATO SE ENCUENTRA EN EL ARBOL.\n");
-            rta = arbol;
-        }else
-            if(dni>arbol->dato.DNI){
-                rta = buscar(arbol->der, dni);
-            }else{
-                rta = buscar(arbol->izq, dni);
-            }
-    }else{
-        printf("\nEL DATO NO SE ENCUENTRA EN EL ARBOL.\n");
+nodoPaciente* buscarNodoPaciente(nodoPaciente* arbol, int dniBuscado) {
+    if (arbol == NULL || arbol->dato.DNI == dniBuscado) {
+        return arbol;
     }
-    return rta;
+
+    if (dniBuscado < arbol->dato.DNI) {
+        return buscarNodoPaciente(arbol->izq, dniBuscado);
+    } else {
+        return buscarNodoPaciente(arbol->der, dniBuscado);
+    }
 }
 
 nodoPaciente* insertarEnArbol(nodoPaciente* arbol, nodoPaciente* nuevo) {///INSERTA EL NODO EN EL ARBOL POR DNI
@@ -98,8 +94,8 @@ nodoPaciente* insertarEnArbol(nodoPaciente* arbol, nodoPaciente* nuevo) {///INSE
     return arbol;
 }
 
-nodoPaciente* cargarPacientesDesdeArchivo() {///LEE EL ARCHIVO PACIENTES COPIANDO LOS DATOS DE LOS QUE ESTAN GUARDADOS, LLAMA A INSERTAR Y LOS GUARDA EN EL ARBOL
-    FILE *archivo = fopen("pacientes.bin", "rb");
+nodoPaciente* cargarPacientesDesdeArchivo() {
+    FILE* archivo = fopen("pacientes.bin", "rb");
     if (archivo == NULL) {
         printf("\nNO SE PUDO ABRIR EL ARCHIVO DE PACIENTES.");
         return NULL;
@@ -109,9 +105,17 @@ nodoPaciente* cargarPacientesDesdeArchivo() {///LEE EL ARCHIVO PACIENTES COPIAND
     paciente pacienteActual;
 
     while (fread(&pacienteActual, sizeof(paciente), 1, archivo) == 1) {
-        arbol = insertarEnArbol(arbol, crearNodo(pacienteActual));
+        nodoPaciente* nuevoNodo = crearNodo(pacienteActual);
+        if (nuevoNodo != NULL) {
+            arbol = insertarEnArbol(arbol, nuevoNodo);
+        } else {
+            // Manejar error de memoria
+            printf("\nERROR AL CREAR NODO PARA EL PACIENTE.");
+            break;
+        }
     }
 
     fclose(archivo);
     return arbol;
 }
+

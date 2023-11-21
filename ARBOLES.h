@@ -18,5 +18,6 @@ nodoPaciente* insertarNodo(nodoPaciente* arbol, nodoPaciente* nuevo);
 void inorder(nodoPaciente* arbol);
 nodoPaciente* insertarEnArbol(nodoPaciente* arbol, nodoPaciente* nuevo);
 nodoPaciente* cargarPacientesDesdeArchivo();
+nodoPaciente* buscarNodoPaciente(nodoPaciente* arbol, int dniBuscado);
 
 #endif // ARBOLES_H_INCLUDED
