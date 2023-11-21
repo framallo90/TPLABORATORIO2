@@ -204,6 +204,53 @@ void menuArchivoEmpleados(){
         }while (repetir);
 }
 
+void menuArchivoIngresos(){
+    int opcion;
+    int repetir = 1;
+        do {
+        system("cls");
+
+        printf("\n\nMENU ARCHIVO INGRESOS\n");
+        printf("1. ALTA INGRESOS (SOLO INGRESO).\n");
+        printf("2. MODIFICAR INGRESO.\n");
+        printf("3. MOSTRAR ARCHIVO.\n");
+        printf("4. DAR DE BAJA INGRESO. \n");
+        printf("0. SALIR\n");
+
+        printf("\nINGRESE UNA OPCION: ");
+        scanf("%d", &opcion);
+
+        switch (opcion) {
+            case 1:
+                altaIngreso();
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 2:
+                modificarIngresoPorNro();
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 3:
+                mostrarIngresos();
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 4:
+                bajaDeIngreso();
+
+                system("pause>nul"); //Pausa
+                break;
+            case 0:
+                repetir = 0;
+                break;
+            }
+        }while (repetir);
+}
+
 void menuArchivoPacientes(){
     int opcion;
     int repetir = 1;
@@ -296,6 +343,7 @@ void menuAdministrador(){
         printf("1. MENU ARCHIVO EMPLEADOS.\n");
         printf("2. MENU ARCHIVO PACIENTES.\n");
         printf("3. MENU ARCHIVO PRACTICAS.\n");
+        printf("4. MENU ARCHIVO INGRESOS.\n");
         printf("0. SALIR\n");
 
         printf("\nINGRESE UNA OPCION: ");
@@ -316,6 +364,12 @@ void menuAdministrador(){
 
             case 3:
                 menuArchivoPracticas();
+
+                system("pause>nul"); // Pausa
+                break;
+
+            case 4:
+                menuArchivoIngresos();
 
                 system("pause>nul"); // Pausa
                 break;
