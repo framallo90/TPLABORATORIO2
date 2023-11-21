@@ -832,8 +832,10 @@ ingresos nuevoIngreso(){
     printf("\nNRO DE INGRESO: ");
     scanf(" %d",&nuevo.NroDeIngreso);
     printf("\nFECHA DE INGRESO d/m/aaaa : ");
+    fflush(stdin);
     scanf(" %s",&nuevo.FechaDeIngreso);
     printf("\nFECHA DE RETIRO d/m/aaaa : ");
+    fflush(stdin);
     scanf(" %s",&nuevo.FechaDeRetiro);
     printf("\nDNI PACIENTE: ");
     scanf(" %d",&nuevo.DniPaciente);
