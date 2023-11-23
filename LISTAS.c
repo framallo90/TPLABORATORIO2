@@ -78,7 +78,7 @@ nodoIngresos *borrarNodoIngresos(nodoIngresos *lista, int nroIngreso) {
 }
 
 void mostrarUnNodoDeIngresos(nodoIngresos * lista){
-    printf("\n---------------------------------------");
+    printf("\n=====================================================");
     printf("\nDNI: %i",lista->dato.DniPaciente);
     printf("\nNUMERO DE INGRESO: %i",lista->dato.NroDeIngreso);
     printf("\nFECHA DE INGRESO: %d/%d/%d", lista->dato.FechaDeRetiro->dia, lista->dato.FechaDeRetiro->mes, lista->dato.FechaDeRetiro->anio);
@@ -89,6 +89,24 @@ void mostrarUnNodoDeIngresos(nodoIngresos * lista){
     } else {
         printf("\nEL INGRESO ESTA DADO DE BAJA.");
     }
+
+    muestroPracAsociadas(lista->dato.NroDeIngreso);
+
+}
+
+void muestroPracAsociadas(int nroIngreso){
+    printf("\nPRACTICAS ASOCIADAS A ESTE INGRESO: ");
+    FILE* archi = fopen("pracXingresos.bin","rb");
+    pracXingreso nuevo;
+    if(archi != NULL){
+        while(fread(&nuevo,sizeof(pracXingreso),1,archi)>0){
+            if(nroIngreso == nuevo.NroDeIngreso){
+                printf("\nNUMERO DE PRACTICA: %d",nuevo.NroDePractica);
+                printf("\n RESULTADO:\n\t %s", nuevo.Resultado);
+            }
+        }
+    }
+    fclose(archi);
 }
 
 void mostrarListaDeIngreso(nodoPaciente* arbol) {
@@ -203,26 +221,27 @@ nodoIngresos * cargarListaDeingresos(nodoIngresos * lista){
 }
 
 nodoIngresos *cargarListaDePracXingreso(nodoIngresos *lista) {
-    FILE *archivo = fopen("pracXingreso.bin", "rb");
+    FILE *archivo = fopen("pracXingresos.bin", "rb");
+    if(lista == NULL){
+            printf("\n LISTA VACIA");
+    }
     pracXingreso aux;
-
     if (archivo != NULL) {
-        while (fread(&aux, sizeof(pracXingreso), 1, archivo) > 0) {
+        while (fread(&aux,sizeof(pracXingreso), 1, archivo) > 0) {
             nodoIngresos *temp = lista;
             while (temp != NULL) {
                 if (aux.NroDeIngreso == temp->dato.NroDeIngreso) {
                     temp->listaPracticasXingreso = agregarFinal(temp->listaPracticasXingreso, crearNodoPracXingreso(aux));
-                    break;  // Se encontró el ingreso, salimos del bucle interno
                 }
-                temp = temp->siguiente;
             }
         }
         fclose(archivo);
     }
-
+    if (lista != NULL && lista->siguiente != NULL){
+        lista = cargarListaDePracXingreso(lista->siguiente);
+    }
     return lista;
 }
-
 
 nodoPaciente* cargarListaDeIngresosDesdeArbol(nodoPaciente* arbol){
     FILE *archivo = fopen("ingresos.bin","rb");
@@ -233,7 +252,7 @@ nodoPaciente* cargarListaDeIngresosDesdeArbol(nodoPaciente* arbol){
                 if(arbol->listaIngresos == NULL){
                     arbol->listaIngresos = crearNodoIngresos(aux);
                 }else{
-                    arbol->listaIngresos = agregarFinal(arbol->listaIngresos, crearNodoIngresos(aux));
+                    arbol->listaIngresos = agregarPpioIngresos(arbol->listaIngresos, crearNodoIngresos(aux));
                 }
             }
         }
@@ -247,66 +266,5 @@ nodoPaciente* cargarListaDeIngresosDesdeArbol(nodoPaciente* arbol){
     }
     return arbol;
 }
-///////////////////////////////////////////////
-nodoPaciente* cargarArbolConListas() {
-    nodoPaciente* arbolPacientes = cargarPacientesDesdeArchivo();
-    if (arbolPacientes == NULL) {
-        printf("\nEL ARBOL NO SE CARGO CORRECTAMENTE.");
-        return NULL;
-    }
-    nodoPaciente* temp = arbolPacientes;
-    while (temp != NULL) {
-        temp->listaIngresos = cargarListaDeingresos(temp->listaIngresos);
-        if (temp->listaIngresos == NULL) {
-            printf("\nERROR AL CARGAR LA LISTA DE INGRESOS DEL PACIENTE CON DNI: %d", temp->dato.DNI);
 
-        }
-        nodoIngresos* tempIngresos = temp->listaIngresos;
-        while (tempIngresos != NULL) {
-            tempIngresos->listaPracticasXingreso = cargarListaDePracXingreso(tempIngresos->listaPracticasXingreso);
-            tempIngresos = tempIngresos->siguiente;
-        }
-
-        temp = temp->der;
-    }
-
-    return arbolPacientes;
-}
-
-
-void mostrarPacientesConListas(nodoPaciente* arbol) {
-    printf("\nPacientes con listas cargadas:\n");
-    mostrarPacientesConListasRecursivo(arbol);
-}
-
-void mostrarPacientesConListasRecursivo(nodoPaciente* arbol) {
-    if (arbol != NULL) {
-        if (arbol->listaIngresos != NULL) {
-            printf("DNI: %d, Nombre: %s\n", arbol->dato.DNI, arbol->dato.NyA);
-        }
-
-        mostrarPacientesConListasRecursivo(arbol->izq);
-        mostrarPacientesConListasRecursivo(arbol->der);
-    }
-}
-
-void mostrarListaDeIngresosDePaciente(nodoPaciente* arbol) {
-    int dniBuscado;
-    printf("\nIngrese el DNI del paciente cuya lista de ingresos desea ver: ");
-    scanf("%d", &dniBuscado);
-
-    nodoPaciente* paciente = buscarNodoPaciente(arbol, dniBuscado);
-
-    if (paciente != NULL) {
-        if (paciente->listaIngresos != NULL) {
-            printf("\nLista de ingresos para el paciente con DNI %d:\n", dniBuscado);
-            mostrarListaDeIngreso(paciente->listaIngresos);
-        } else {
-            printf("\nEl paciente con DNI %d no tiene ingresos registrados.\n", dniBuscado);
-        }
-    } else {
-        printf("\nPaciente con DNI %d no encontrado.\n", dniBuscado);
-    }
-}
-///////////////////////////////////////////////////
 

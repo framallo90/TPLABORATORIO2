@@ -29,7 +29,7 @@ void menu(){
             case 1:
                 perfil = login();
                 if (perfil == 1) {
-                    menuAdministrador();
+                    menuAdministrador(perfil);
                 } else {
                     printf("\n\tESTE PERFIL NO ES ADMIN.\n");
                 }
@@ -40,7 +40,7 @@ void menu(){
             case 2:
                 perfil = login();
                 if (perfil == 2) {
-                    menuAdministrativo();
+                    menuAdministrativo(perfil);
                 } else {
                     printf("\n\tESTE PERFIL NO ES ADMINISTRATIVO.\n");
                 }
@@ -51,7 +51,7 @@ void menu(){
             case 3:
                 perfil = login();
                 if (perfil == 3) {
-                    menuProfesionalLaboratorio();
+                    menuProfesionalLaboratorio(perfil);
                 } else {
                     printf("\n\tESTE PERFIL NO ES TECNICO DE LABORATORIO.\n");
                 }
@@ -165,19 +165,16 @@ void menuArchivoEmpleados(){
         switch (opcion) {
             case 1:
                 altaEmpleado();
-                printf("\nEMPLEADO DADO DE ALTA EXITOSAMENTE.\n");
                 system("pause>nul"); // Pausa
                 break;
 
             case 2:
                 borrarEmpleadoPorDNI();
-                printf("\nIngreso modificado exitosamente.\n");
                 system("pause>nul"); // Pausa
                 break;
 
             case 3:
                 modificarEmpleadoPorDNI();
-                printf("\nSe modifico el empleado de manera exitosamente.\n");
                 system("pause>nul"); // Pausa
                 break;
 
@@ -194,14 +191,14 @@ void menuArchivoEmpleados(){
         }while (repetir);
 }
 
-void menuArchivoIngresos(){
+void menuArchivoIngresos(int perfil){
     int opcion;
     int repetir = 1;
         do {
         system("cls");
 
         printf("\n\nMENU ARCHIVO INGRESOS\n");
-        printf("1. ALTA INGRESOS (SOLO INGRESO).\n");
+        printf("1. ALTA INGRESOS.\n");
         printf("2. MODIFICAR INGRESO.\n");
         printf("3. MOSTRAR ARCHIVO.\n");
         printf("4. DAR DE BAJA INGRESO. \n");
@@ -212,7 +209,7 @@ void menuArchivoIngresos(){
 
         switch (opcion) {
             case 1:
-                altaIngreso();
+                altaOrden(perfil);
 
                 system("pause>nul"); // Pausa
                 break;
@@ -251,6 +248,7 @@ void menuArchivoPacientes(){
         printf("1. ALTA PACIENTE.\n");
         printf("2. MODIFICAR PACIENTE POR DNI.\n");
         printf("3. MOSTRAR ARCHIVO.\n");
+        printf("4. BAJA PACIENTE.\n");
         printf("0. SALIR\n");
 
         printf("\nINGRESE UNA OPCION: ");
@@ -271,6 +269,11 @@ void menuArchivoPacientes(){
 
             case 3:
                 mostrarPacientes();
+
+                system("pause>nul"); // Pausa
+                break;
+            case 4:
+                bajaPaciente();
 
                 system("pause>nul"); // Pausa
                 break;
@@ -316,6 +319,12 @@ void menuArchivoPracticas(){
                 system("pause>nul"); // Pausa
                 break;
 
+            case 4:
+                darPracticaDeBaja();
+
+                system("pause>nul"); // Pausa
+                break;
+
             case 0:
             	repetir = 0;
             	break;
@@ -324,7 +333,7 @@ void menuArchivoPracticas(){
 
 }
 
-void menuArchivoPractXingreso(){
+void menuArchivoPractXingreso(int perfil){
     int opcion;
     int repetir = 1;
         do {
@@ -342,13 +351,13 @@ void menuArchivoPractXingreso(){
         switch (opcion) {
             case 1:
 
-                altaPracticasXingreso();
+                altaPracticasXingreso(perfil);
 
                 system("pause>nul"); // Pausa
                 break;
 
             case 2:
-                modificarPracXingreso();
+                modificarPracXingreso(perfil);
 
                 system("pause>nul"); // Pausa
                 break;
@@ -366,10 +375,10 @@ void menuArchivoPractXingreso(){
         }while (repetir);
 }
 
-void menuAdministrador(){
+void menuAdministrador(int perfil){
     int opcion;
     int repetir = 1;
-    nodoPaciente* arbol=cargarArbolConListas(arbol);
+    nodoPaciente* arbol= cargarPacientesDesdeArchivo();
 
         do {
         system("cls");
@@ -383,6 +392,7 @@ void menuAdministrador(){
         printf("6. MOSTRAR ARBOL DE PACIENTES. \n");
         printf("7. MOSTRAR INGRESOS Y PRACTICAS DE LOS PACIENTES. \n");
         printf("8. ALTA ORDEN (INGRESO + PRACTICAS).\n");
+        printf("9. BUSCAR INGRESOS POR DNI.\n");
         printf("0. SALIR\n");
 
         printf("\nINGRESE UNA OPCION: ");
@@ -408,11 +418,11 @@ void menuAdministrador(){
                 break;
 
             case 4:
-                menuArchivoIngresos();
+                menuArchivoIngresos(perfil);
                 system("pause>nul"); //Pausa
                 break;
             case 5:
-                menuArchivoPractXingreso();
+                menuArchivoPractXingreso(perfil);
                 system("pause>nul"); //Pausa
                 break;
 
@@ -422,11 +432,17 @@ void menuAdministrador(){
                 break;
 
             case 7:
+                arbol = cargarListaDeIngresosDesdeArbol(arbol);
                 mostrarListaDeIngreso(arbol);
                 system("pause>nul");
                 break;
              case 8:
-                altaOrden();
+                altaOrden(perfil);
+                system("pause>nul"); //Pausa
+                break;
+
+             case 9:
+                buscarIngresoPorDni();
                 system("pause>nul"); //Pausa
                 break;
 
@@ -437,7 +453,7 @@ void menuAdministrador(){
         }while (repetir);
 }
 
-void menuAdministrativo(){
+void menuAdministrativo(int perfil){
     int opcion;
     int repetir = 1;
     nodoPaciente* arbol= cargarPacientesDesdeArchivo();
@@ -460,7 +476,7 @@ void menuAdministrativo(){
 
         switch (opcion) {
             case 1:
-                altaOrden();
+                altaOrden(perfil);
                 system("pause>nul"); // Pausa
                 break;
 
@@ -502,10 +518,10 @@ void menuAdministrativo(){
     } while (repetir);
 }
 
-void menuProfesionalLaboratorio(){
+void menuProfesionalLaboratorio(int perfil){
     int opcion;
     int repetir = 1;
-    nodoPaciente* arbol=cargarArbolConListas(arbol);
+    nodoPaciente* arbol= cargarPacientesDesdeArchivo();
 
     do {
         system("cls");
@@ -523,13 +539,13 @@ void menuProfesionalLaboratorio(){
 
         switch (opcion) {
             case 1:
-                altaPracticasXingreso();
+                altaPracticasXingreso(perfil);
                 printf("\nPráctica por ingreso dada de alta exitosamente.\n");
                 system("pause>nul"); // Pausa
                 break;
 
             case 2:
-                modificarPracXingreso();
+                modificarPracXingreso(perfil);
                 printf("\nPráctica por ingreso modificada exitosamente.\n");
                 system("pause>nul"); // Pausa
                 break;
@@ -545,7 +561,9 @@ void menuProfesionalLaboratorio(){
                 break;
 
             case 5:
+                arbol = cargarListaDeIngresosDesdeArbol(arbol);
                 mostrarListaDeIngreso(arbol);
+
                 system("pause>nul");
                 break;
 

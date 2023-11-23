@@ -2,29 +2,35 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+	<File name="menues.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="230" topLine="0" />
+			<Cursor1 position="358" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="FuncArchivos.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="LISTAS.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="237" topLine="0" />
+			<Cursor1 position="201" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="LISTAS.c" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="menues.c" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7491" topLine="220" />
+			<Cursor1 position="9756" topLine="25" />
 		</Cursor>
+		<Folding>
+			<Collapse line="9" />
+			<Collapse line="67" />
+			<Collapse line="147" />
+			<Collapse line="193" />
+			<Collapse line="240" />
+			<Collapse line="287" />
+			<Collapse line="335" />
+			<Collapse line="455" />
+			<Collapse line="520" />
+		</Folding>
 	</File>
-	<File name="menues.c" open="1" top="1" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="FuncArchivos.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="-2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="82" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="FuncArchivos.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="31903" topLine="0" />
+			<Cursor1 position="18" topLine="0" />
 		</Cursor>
 		<Folding>
 			<Collapse line="11" />
@@ -35,35 +41,75 @@
 			<Collapse line="178" />
 			<Collapse line="222" />
 			<Collapse line="330" />
-			<Collapse line="350" />
-			<Collapse line="368" />
-			<Collapse line="398" />
-			<Collapse line="412" />
-			<Collapse line="436" />
-			<Collapse line="486" />
-			<Collapse line="527" />
-			<Collapse line="546" />
-			<Collapse line="559" />
-			<Collapse line="582" />
-			<Collapse line="609" />
-			<Collapse line="649" />
-			<Collapse line="676" />
-			<Collapse line="694" />
-			<Collapse line="706" />
-			<Collapse line="724" />
-			<Collapse line="742" />
-			<Collapse line="775" />
-			<Collapse line="817" />
-			<Collapse line="843" />
+			<Collapse line="349" />
+			<Collapse line="367" />
+			<Collapse line="397" />
+			<Collapse line="411" />
+			<Collapse line="435" />
+			<Collapse line="485" />
+			<Collapse line="526" />
+			<Collapse line="545" />
+			<Collapse line="558" />
+			<Collapse line="581" />
+			<Collapse line="608" />
+			<Collapse line="648" />
+			<Collapse line="675" />
+			<Collapse line="693" />
+			<Collapse line="705" />
+			<Collapse line="723" />
+			<Collapse line="741" />
+			<Collapse line="774" />
+			<Collapse line="821" />
+			<Collapse line="847" />
 			<Collapse line="871" />
-			<Collapse line="898" />
-			<Collapse line="953" />
-			<Collapse line="984" />
+			<Collapse line="896" />
+			<Collapse line="952" />
+			<Collapse line="983" />
+			<Collapse line="1008" />
+			<Collapse line="1022" />
+			<Collapse line="1048" />
 		</Folding>
 	</File>
-	<File name="LISTAS.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="FuncArchivos.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="229" topLine="0" />
+			<Cursor1 position="3427" topLine="88" />
+		</Cursor>
+	</File>
+	<File name="LISTAS.c" open="1" top="1" tabpos="8" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7296" topLine="19" />
+		</Cursor>
+		<Folding>
+			<Collapse line="10" />
+			<Collapse line="19" />
+			<Collapse line="29" />
+			<Collapse line="39" />
+			<Collapse line="47" />
+			<Collapse line="57" />
+			<Collapse line="79" />
+			<Collapse line="96" />
+			<Collapse line="111" />
+			<Collapse line="128" />
+			<Collapse line="135" />
+			<Collapse line="145" />
+			<Collapse line="155" />
+			<Collapse line="163" />
+			<Collapse line="173" />
+			<Collapse line="195" />
+			<Collapse line="202" />
+			<Collapse line="210" />
+			<Collapse line="222" />
+			<Collapse line="245" />
+		</Folding>
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="230" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="ARBOLES.c" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3548" topLine="80" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

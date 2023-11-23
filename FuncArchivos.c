@@ -9,7 +9,7 @@
 
 
 
-void altaOrden(){///AL DAR DE ALTA UN INGRESO EXIGE AL MENOS UNA PRACTICA X INGRESO POR ESO ES NECESARIA LA FUNCION ALTA ORDEN.
+void altaOrden(int perfil){///AL DAR DE ALTA UN INGRESO EXIGE AL MENOS UNA PRACTICA X INGRESO POR ESO ES NECESARIA LA FUNCION ALTA ORDEN.
     char c = 's';
     int dni;
 
@@ -18,11 +18,11 @@ void altaOrden(){///AL DAR DE ALTA UN INGRESO EXIGE AL MENOS UNA PRACTICA X INGR
     scanf("%d", &dni);
 
        if (pacienteExiste(dni)){
-    altaIngreso();
+        altaIngreso(dni);
 
     printf("\nALTA DE PRACTICA POR INGRESO: ");
     while(c == 's'){
-        altaPracticasXingreso();
+        altaPracticasXingreso(perfil);
         printf("\nINGRESAR OTRA PRACTICA? s/n ");
         fflush(stdin);
         scanf(" %c",&c);
@@ -328,15 +328,14 @@ void modificarEmpleadoPorDNI() {///PIDE DNI, BUSCA EN EL ARCHIVO EMPLEADOS.BIN Y
 
 
 /// FUNCIONES PARA ARCHIVO PACIENTES
-paciente IngresoPaciente() {///INGRESA DATOS DE PACIENTES E INICIALIZA LOS PUNTEROS EN NULL.
+paciente IngresoPaciente(int dni) {///INGRESA DATOS DE PACIENTES E INICIALIZA LOS PUNTEROS EN NULL.
     paciente nuevo;
     printf("\nAPELLIDO Y NOMBRE DEL PACIENTE: ");
     fflush(stdin);
     gets(&nuevo.NyA);
     printf("\nEDAD DEL PACIENTE: ");
     scanf(" %d", &nuevo.Edad);
-    printf("\nDNI DEL PACIENTE: ");
-    scanf(" %d", &nuevo.DNI);
+    nuevo.DNI = dni;
     printf("\nDIRECCION DEL PACIENTE: ");
     fflush(stdin);
     gets(&nuevo.Direccion);
@@ -379,7 +378,7 @@ void altaPaciente() {/// PIDE DNI, COMPRUEBA QUE NO EXISTA Y COMIENZA EL ALTA. U
     }
 
     // en cambio si devuelve "FALSE", saltea el if.
-    nuevo = IngresoPaciente();
+    nuevo = IngresoPaciente(dni);
 
     FILE *archi = fopen("pacientes.bin", "ab");
     if (archi == NULL) {
@@ -692,15 +691,15 @@ int verVincDePractica(int nroDePractica){
 
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS X INGRESO
-pracXingreso nuevaPracticaXingreso(){
+pracXingreso nuevaPracticaXingreso(int nroPractica, int nroIngreso,int perfil){
     pracXingreso nueva;
-    printf("\nNRO DE INGRESO: ");
-    scanf(" %d",&nueva.NroDeIngreso);
-    printf("\nNRO DE PRACTICA: ");
-    scanf(" %d",&nueva.NroDePractica);
-    printf("\nRESULTADO:\n");
-    scanf("    %s",&nueva.Resultado);
-
+    nueva.NroDeIngreso = nroIngreso;
+    nueva.NroDePractica = nroPractica;
+    if(perfil == 3){
+        printf("\nRESULTADO:\n");
+        scanf("    %s",&nueva.Resultado);
+    }
+    printf("\n PRACTICA X INGRESO CARGADA.");
     return nueva;
 }
 
@@ -740,7 +739,7 @@ bool ingresoExiste(int nroIngreso) {/// TRUE OR FALSE, SI EL NRO DE INGRESO EXIS
     return false; // El ingreso no existe en el archivo
 }
 
-void altaPracticasXingreso() {/// PIDE NRO INGRESO NRO PRACTICA, COMPRUEBA QUE EXISTAN Y COMIENZA EL ALTA. UTILIZA NUEVA PRACTICAXING Y VERIF PRACT E ING
+void altaPracticasXingreso(int perfil) {/// PIDE NRO INGRESO NRO PRACTICA, COMPRUEBA QUE EXISTAN Y COMIENZA EL ALTA. UTILIZA NUEVA PRACTICAXING Y VERIF PRACT E ING
     pracXingreso nuevo;
     int nroPractica;
     int nroIngreso;
@@ -756,7 +755,7 @@ void altaPracticasXingreso() {/// PIDE NRO INGRESO NRO PRACTICA, COMPRUEBA QUE E
     }
 
     // en cambio si devuelve "true", saltea el if.
-    nuevo = nuevaPracticaXingreso();
+    nuevo = nuevaPracticaXingreso(nroPractica, nroIngreso, perfil);
 
     FILE *archi = fopen("pracXingresos.bin", "ab");
     if (archi == NULL) {
@@ -773,8 +772,9 @@ void altaPracticasXingreso() {/// PIDE NRO INGRESO NRO PRACTICA, COMPRUEBA QUE E
     fclose(archi);
 }
 
-void modificarPracXingreso() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
+void modificarPracXingreso(int perfil) {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
     int nroIngreso;
+    muestroNumerosDeIngreso();
     printf("\nINGRESE EL NRO. DE INGRESO ASOCIADO A LA PRACTICA QUE QUIERE MODIFICAR: ");
     scanf("%d", &nroIngreso);
 
@@ -798,11 +798,15 @@ void modificarPracXingreso() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN 
             printf("\nINGRESE LA NUEVA INFORMACION:\n");
             printf("\nNUMERO DE PRACTICA: ");
             scanf("%d", &nuevo.NroDePractica);
-            printf("\nRESULTADO: ");
-            scanf("%s", &nuevo.Resultado);
 
-            fseek(archi, -sizeof(pracXingreso), SEEK_CUR); // Retrocede al inicio del registro como el rewind(archi)
-            fwrite(&nuevo, sizeof(pracXingreso), 1, archi); // Sobrescribe el registro modificado
+            if(perfil == 3){
+                    printf("\nRESULTADO: ");
+                    scanf("%s", &nuevo.Resultado);
+            }
+
+
+            fseek(archi, -sizeof(pracXingreso), SEEK_CUR);
+            fwrite(&nuevo, sizeof(pracXingreso), 1, archi);
             printf("\nPRACTICA POR INGRESO MODIFICADA CON EXITO.\n");
             break;
         }
@@ -841,24 +845,20 @@ void mostrarPracticasXingreso() {
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
 
-ingresos nuevoIngreso() {
+ingresos nuevoIngreso(int dni) {
     ingresos nuevo;
 
-    printf("\nNRO DE INGRESO: ");
-    scanf("%d", &nuevo.NroDeIngreso);
+    nuevo.NroDeIngreso = nuevoNumeroDeIngreso();
+    printf("\nINGRESO NUMERO: %d", nuevo.NroDeIngreso);
 
-    // Cargar la fecha de ingreso
     printf("\nFECHA DE INGRESO (d/m/aaaa): ");
     fflush(stdin);
     scanf("%d/%d/%d", &nuevo.FechaDeIngreso->dia, &nuevo.FechaDeIngreso->mes, &nuevo.FechaDeIngreso->anio);
 
-    // Cargar la fecha de retiro
     printf("\nFECHA DE RETIRO (d/m/aaaa): ");
     fflush(stdin);
     scanf("%d/%d/%d", &nuevo.FechaDeRetiro->dia, &nuevo.FechaDeRetiro->mes, &nuevo.FechaDeRetiro->anio);
-    printf("\nDNI PACIENTE: ");
-    fflush(stdin);
-    scanf("%d", &nuevo.DniPaciente);
+    nuevo.DniPaciente = dni;
 
     printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: ");
     fflush(stdin);
@@ -869,14 +869,12 @@ ingresos nuevoIngreso() {
     return nuevo;
 }
 
-void altaIngreso() {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILIZA NUEVO INGRESO Y PACIENTE EXISTE
+void altaIngreso(int dni) {/// PIDE DNI, COMPRUEBA QUE EXISTA Y COMIENZA EL ALTA. UTILIZA NUEVO INGRESO Y PACIENTE EXISTE
     ingresos nuevo;
-    int dni;
-
     FILE *archi = fopen("ingresos.bin", "ab");
 
 
-        nuevo = nuevoIngreso();
+        nuevo = nuevoIngreso(dni);
 
 
     if (archi == NULL) {
@@ -898,6 +896,7 @@ fclose(archi);
 
 void modificarIngresoPorNro() {///PIDE DNI, BUSCA EN EL ARCHIVO DE PACIENTES.BIN Y MODIFICA LOS DATOS DEL PACIENTE ENCONTRADO
     int nroIngreso;
+    muestroNumerosDeIngreso();
     printf("\nINGRESE EL INGRESO A MODIFICAR: ");
     scanf("%d", &nroIngreso);
 
@@ -1005,4 +1004,61 @@ void bajaDeIngreso(){
         printf("\nEL INGRESO FUE DADO DE BAJA.");
     }
 
+}
+
+int nuevoNumeroDeIngreso(){
+      int contador = 0;
+      FILE* archivo = fopen("ingresos.bin", "rb");
+
+    if (archivo != NULL) {
+        ingresos ingreso;
+        while (fread(&ingreso, sizeof(ingresos), 1, archivo) == 1) {
+        contador++;
+        }
+    }
+    fclose(archivo);
+    return contador+1;
+}
+
+void buscarIngresoPorDni(){
+    int dni;
+    printf("\nDNI DEL PACIENTE: ");
+    scanf("%d", &dni);
+
+    ingresos nuevo;
+    FILE* archi = fopen("ingresos.bin","rb");
+    if(archi != NULL){
+        while(fread(&nuevo, sizeof(ingresos),1,archi)>0){
+            if(dni == nuevo.DniPaciente){
+                printf("\n===========================================================");
+                printf("\nNUMERO DE INGRESO: %d.",nuevo.NroDeIngreso);
+                printf("\nMATRICULA DEL PROFESIONAL SOLICITANTE: %d.",nuevo.MatriculaDelProfesionalSolicitante);
+                printf("\nFECHA DE INGRESO: %d/%d/%d .",nuevo.FechaDeIngreso->dia,nuevo.FechaDeIngreso->mes,nuevo.FechaDeIngreso->anio);
+                printf("\nFECHA DE RETIRO: %d/%d/%d .",nuevo.FechaDeRetiro->dia,nuevo.FechaDeRetiro->mes,nuevo.FechaDeRetiro->anio);
+                if(nuevo.Eliminado==0){
+                    printf("\nEL INGRESO SE ENCUENTRA ACTIVO.");
+                    }else{
+                    printf("\nEL INGRESO ESTA DADO DE BAJA.");
+                        }
+                }
+            }
+        }
+    fclose(archi);
+}
+
+void muestroNumerosDeIngreso(){
+    ingresos nuevo;
+    FILE* archivo = fopen("ingresos.bin", "rb");
+    if(archivo!=NULL){
+        while(fread(&nuevo, sizeof(ingresos),1,archivo)>0){
+            printf("\n N. INGRESO: %d, DNI: %d",nuevo.NroDeIngreso, nuevo.DniPaciente);
+            printf(", ESTADO: ");
+            if(nuevo.Eliminado == 0){
+                printf("ACTIVO.");
+            }else{
+                printf("DADO DE BAJA.");
+            }
+        }
+    }
+    fclose(archivo);
 }

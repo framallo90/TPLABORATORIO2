@@ -12,18 +12,18 @@
 #define TECLA_ENTER 13
 #define TECLA_BACKSPACE 8
 #define LONGITUD 20
-#define MAX_INTENTOS 3
+#define MAX_INTENTOS 99
 
 
 void menu();
 int login();
 void menuArchivoEmpleados();
-void menuArchivoIngresos();
+void menuArchivoIngresos(int perfil);
 void menuArchivoPacientes();
 void menuArchivoPracticas();
-void menuArchivoPractXingreso();
-void menuAdministrador();
-void menuAdministrativo();
-void menuProfesionalLaboratorio();
+void menuArchivoPractXingreso(int perfil);
+void menuAdministrador(int perfil);
+void menuAdministrativo(int perfil);
+void menuProfesionalLaboratorio(int perfil);
 
 #endif // MENUES_H_INCLUDED

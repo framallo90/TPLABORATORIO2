@@ -71,7 +71,7 @@ typedef struct nodoPracXingreso {///SEGUNDA LISTA DE PRACTICAS POR INGRESO QUE S
     struct pracXingreso *siguiente;
 } nodoPracXingreso;
 
-void altaOrden();
+void altaOrden(int perfil);
 
 /// FUNCIONES PARA ARCHIVO EMPLEADOS
 empleados_laboratorio ingresoEmpleado();
@@ -82,7 +82,7 @@ void borrarEmpleadoPorDNI();
 void modificarEmpleadoPorDNI();
 
 /// FUNCIONES PARA ARCHIVO PACIENTES
-paciente IngresoPaciente();
+paciente IngresoPaciente(int dni);
 bool pacienteExiste(int dni);
 void altaPaciente();
 void muestroUnPaciente(paciente paciente);
@@ -100,18 +100,20 @@ void darPracticaDeBaja();
 int verVincDePractica(int nroDePractica);
 
 ///FUNCIONES PARA ARCHIVO DE PRACTICAS X INGRESO
-pracXingreso nuevaPracticaXingreso();
+pracXingreso nuevaPracticaXingreso(int nroPractica, int nroIngreso,int perfil);
 bool practicaExiste(int nroPractica);
 bool ingresoExiste(int nroIngreso);
-void altaPracticasXingreso();
-void modificarPracXingreso();
+void altaPracticasXingreso(int perfil);
+void modificarPracXingreso(int perfil);
 void mostrarPracticasXingreso();
 
 ///FUNCIONES PARA ARCHIVO DE INGRESOS
-ingresos nuevoIngreso();
-void altaIngreso();
+ingresos nuevoIngreso(int dni);
+void altaIngreso(int dni);
 void modificarIngresoPorNro();
 void mostrarIngresos();
 void bajaDeIngreso();
-
+int nuevoNumeroDeIngreso();
+void buscarIngresoPorDni();
+void muestroNumerosDeIngreso();
 #endif // FUNCARCHIVOS_H_INCLUDED
